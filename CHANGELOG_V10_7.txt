@@ -1,0 +1,20 @@
+V10.7 ONLINE FIREBASE UPDATE
+
+- Added online backend mode using Firebase Firestore.
+- Added index.html for GitHub + Cloudflare Pages deployment.
+- Added firebase-config.js and firestore.rules.
+- Customer combine logic now uses phone number as the unique key, not customer name.
+- Added manual Combine Phone action in Customers.
+- Updated Reports with date/status/payment/technician/phone filters.
+- Added report summaries by daily, monthly, status/payment, item/service, and customer/phone.
+- Added balance, collected, cost, expenses, gross/net calculations to Reports.
+- Added Export Report action.
+- Removed Excel Auto Save indicator from topbar beside dark/light mode switch.
+- Kept manual Save / Export Excel in Settings for backup/export only.
+- Changed business logo/text to KEDAI REPAIR PHONE using yellow and red.
+- Invoice/receipt now keeps only one transparent visible AE stamp; paid stamp no longer repeats the logo.
+- Kept original modules and layout except requested changes.
+
+V10.7.1 Sync Fix
+- Fixed online sync issue where renderPage() reloaded local browser database after Firebase database was loaded.
+- Added FIREBASE_SYNC_TEST.html for no-F12 Firebase write/read check.

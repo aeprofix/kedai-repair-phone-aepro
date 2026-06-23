@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Firebase Sync Test</title>
+<style>body{font-family:Arial,sans-serif;background:#111827;color:#f9fafb;padding:24px}.box{max-width:720px;margin:auto;background:#1f2937;border:1px solid #374151;border-radius:16px;padding:22px}button{background:#2563eb;color:#fff;border:0;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer;margin:6px 6px 6px 0}.ok{color:#86efac}.bad{color:#fca5a5}.muted{color:#cbd5e1}pre{white-space:pre-wrap;background:#0b1220;padding:12px;border-radius:10px;border:1px solid #334155}</style>
+</head><body><div class="box"><h1>Firebase Sync Test</h1><p class="muted">Buka page ini dari link Cloudflare Pages. Klik button bawah. Tidak perlu F12.</p><button onclick="runTest()">Test Firebase Write/Read</button><button onclick="location.href='index.html'">Back To System</button><div id="out"><pre>Belum test.</pre></div></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+function log(t,cls){document.getElementById('out').innerHTML='<pre class="'+(cls||'')+'">'+String(t).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})+'</pre>';}
+async function runTest(){
+ try{
+  if(!window.AEPRO_FIREBASE_CONFIG || !window.AEPRO_FIREBASE_CONFIG.projectId){log('FAILED: firebase-config.js masih kosong / projectId tiada. Isi config Firebase dan push semula ke GitHub.', 'bad');return;}
+  if(typeof firebase==='undefined'){log('FAILED: Firebase library tidak load. Check internet atau CDN block.', 'bad');return;}
+  if(!firebase.apps.length){firebase.initializeApp(window.AEPRO_FIREBASE_CONFIG);}
+  const cfg=window.AEPRO_FIREBASE_DOC||{collection:'aepro_management',document:'main_database'};
+  const ref=firebase.firestore().collection(cfg.collection||'aepro_management').doc(cfg.document||'main_database');
+  const stamp=new Date().toISOString();
+  await ref.set({syncTest:'OK',syncTestAt:stamp},{merge:true});
+  const snap=await ref.get();
+  const d=snap.data()||{};
+  log('SUCCESS: Firebase write/read OK.\n\nProject ID: '+window.AEPRO_FIREBASE_CONFIG.projectId+'\nPath: '+(cfg.collection||'aepro_management')+' / '+(cfg.document||'main_database')+'\nSync Test: '+d.syncTest+'\nTime: '+d.syncTestAt+'\n\nSekarang data sepatutnya muncul di Firestore Database > Data.', 'ok');
+ }catch(e){
+  log('FAILED: '+(e && e.message ? e.message : e)+'\n\nKalau error permission: Firestore Rules belum open/publish.\nKalau error project/config: firebase-config.js salah atau belum deploy.', 'bad');
+ }
+}
+</script></body></html>

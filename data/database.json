@@ -1,0 +1,273 @@
+{
+  "meta": {
+    "version": "V3 Online",
+    "app": "AEPro System V3",
+    "created": "2026-06-22",
+    "updated": "2026-06-22",
+    "excelSync": "Manual Download Only",
+    "onlineSync": "Firebase Firestore Ready"
+  },
+  "SETTINGS": [
+    {
+      "Key": "BusinessName",
+      "Value": "KEDAI REPAIR PHONE"
+    },
+    {
+      "Key": "Tagline",
+      "Value": "Premium Phone Repair Management System"
+    },
+    {
+      "Key": "Phone",
+      "Value": "+6012-3456789"
+    },
+    {
+      "Key": "WhatsApp",
+      "Value": "60123456789"
+    },
+    {
+      "Key": "Location",
+      "Value": "Tandop, Alor Setar"
+    },
+    {
+      "Key": "Email",
+      "Value": ""
+    },
+    {
+      "Key": "BankName",
+      "Value": "Maybank"
+    },
+    {
+      "Key": "BankAccount",
+      "Value": "1234567890"
+    },
+    {
+      "Key": "AccountName",
+      "Value": "KEDAI REPAIR PHONE"
+    },
+    {
+      "Key": "Currency",
+      "Value": "RM"
+    },
+    {
+      "Key": "DefaultWarrantyDays",
+      "Value": "30"
+    },
+    {
+      "Key": "InvoiceNote",
+      "Value": ""
+    },
+    {
+      "Key": "Theme",
+      "Value": "dark"
+    },
+    {
+      "Key": "LogoPath",
+      "Value": "assets/ae_pro_fix_logo.png"
+    },
+    {
+      "Key": "QRPath",
+      "Value": "assets/payment_qr.png"
+    },
+    {
+      "Key": "AutoBackup",
+      "Value": "Yes"
+    },
+    {
+      "Key": "ExcelAutoSync",
+      "Value": "No"
+    },
+    {
+      "Key": "LiveExcelFile",
+      "Value": ""
+    },
+    {
+      "Key": "SyncMode",
+      "Value": "Firebase Online Database"
+    },
+    {
+      "Key": "JobPrefix",
+      "Value": "AEP-JOB"
+    },
+    {
+      "Key": "CustomerPrefix",
+      "Value": "AEP-CUS"
+    },
+    {
+      "Key": "PartPrefix",
+      "Value": "AEP-PRT"
+    },
+    {
+      "Key": "PaymentPrefix",
+      "Value": "AEP-PAY"
+    },
+    {
+      "Key": "UsagePrefix",
+      "Value": "AEP-USG"
+    },
+    {
+      "Key": "WarrantyPrefix",
+      "Value": "AEP-WTY"
+    },
+    {
+      "Key": "InvoicePrefix",
+      "Value": "AEP-INV"
+    },
+    {
+      "Key": "ReceiptPrefix",
+      "Value": "AEP-RCP"
+    },
+    {
+      "Key": "SSMNo",
+      "Value": ""
+    },
+    {
+      "Key": "WarrantyTerms",
+      "Value": "Warranty bermula selepas repair siap atau pickup. Warranty tidak cover crack, water damage, short, board tamper, atau kerosakan baru selepas pickup."
+    }
+  ],
+  "USERS": [
+    {
+      "UserID": "USR-001",
+      "Username": "admin",
+      "Password": "",
+      "Role": "Owner",
+      "Status": "Active",
+      "DisplayName": "Admin",
+      "PasswordHash": "AEP3$2f4f805c"
+    }
+  ],
+  "JOBS": [],
+  "CUSTOMERS": [],
+  "INVENTORY": [],
+  "PRICEBOOK": [],
+  "PAYMENTS": [],
+  "PART_USAGE": [],
+  "WARRANTY": [],
+  "EXPENSES": [],
+  "STAFF": [],
+  "DROPDOWNS": [
+    {
+      "Type": "JobStatus",
+      "Value": "Received"
+    },
+    {
+      "Type": "JobStatus",
+      "Value": "Diagnosing"
+    },
+    {
+      "Type": "JobStatus",
+      "Value": "Waiting Parts"
+    },
+    {
+      "Type": "JobStatus",
+      "Value": "In Repair"
+    },
+    {
+      "Type": "JobStatus",
+      "Value": "Ready Pickup"
+    },
+    {
+      "Type": "JobStatus",
+      "Value": "Completed"
+    },
+    {
+      "Type": "JobStatus",
+      "Value": "Cancelled"
+    },
+    {
+      "Type": "Priority",
+      "Value": "Normal"
+    },
+    {
+      "Type": "Priority",
+      "Value": "Urgent"
+    },
+    {
+      "Type": "Priority",
+      "Value": "High"
+    },
+    {
+      "Type": "Priority",
+      "Value": "Low"
+    },
+    {
+      "Type": "Brand",
+      "Value": "Apple"
+    },
+    {
+      "Type": "Brand",
+      "Value": "Samsung"
+    },
+    {
+      "Type": "Brand",
+      "Value": "OPPO"
+    },
+    {
+      "Type": "Brand",
+      "Value": "vivo"
+    },
+    {
+      "Type": "Brand",
+      "Value": "Xiaomi"
+    },
+    {
+      "Type": "Brand",
+      "Value": "realme"
+    },
+    {
+      "Type": "Brand",
+      "Value": "HONOR"
+    },
+    {
+      "Type": "Brand",
+      "Value": "Huawei"
+    },
+    {
+      "Type": "Brand",
+      "Value": "Infinix"
+    },
+    {
+      "Type": "Brand",
+      "Value": "TECNO"
+    },
+    {
+      "Type": "Brand",
+      "Value": "Google"
+    },
+    {
+      "Type": "Brand",
+      "Value": "Sony"
+    },
+    {
+      "Type": "Brand",
+      "Value": "Other"
+    },
+    {
+      "Type": "PaymentMethod",
+      "Value": "Cash"
+    },
+    {
+      "Type": "PaymentMethod",
+      "Value": "Bank Transfer"
+    },
+    {
+      "Type": "PaymentMethod",
+      "Value": "QR Pay"
+    },
+    {
+      "Type": "PaymentMethod",
+      "Value": "Card"
+    },
+    {
+      "Type": "PaymentMethod",
+      "Value": "E-Wallet"
+    }
+  ],
+  "LOGS": [],
+  "APPOINTMENTS": [],
+  "SUPPLIERS": [],
+  "QUOTES": [],
+  "INVOICES_DB": [],
+  "SYSTEM_AUDIT": [],
+  "INVENTORY_LEDGER": []
+}

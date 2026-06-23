@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=11" />
+<meta charset="utf-8" />
+<title>AEPro System V3</title>
+<style>
+html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;}
+*{box-sizing:border-box;}
+body.dark{background:radial-gradient(circle at 0 0,#2563eb 0,#101a34 34%,#040816 78%);color:#e5eefc;}
+body.light{background:radial-gradient(circle at 0 0,#dbeafe 0,#f8fafc 48%,#e2e8f0 100%);color:#0f172a;}
+.app{position:absolute;left:12px;top:12px;right:12px;bottom:12px;border:1px solid rgba(255,255,255,.10);background:rgba(6,12,26,.94);box-shadow:0 28px 90px rgba(0,0,0,.55);border-radius:26px;overflow:hidden;}
+body.light .app{background:rgba(255,255,255,.96);border-color:#dbeafe;box-shadow:0 28px 80px rgba(30,41,59,.20);}
+.loginPage{position:absolute;left:0;top:0;right:0;bottom:0;z-index:30000;background:radial-gradient(circle at top left,#0ea5e9 0,#0f172a 42%,#020617 100%);}
+.loginShell{position:absolute;left:50%;top:50%;width:430px;margin-left:-215px;margin-top:-245px;}
+.loginLogo{height:116px;border-radius:28px;padding:22px;background:linear-gradient(135deg,#0ea5e9,#7c3aed 55%,#f59e0b);box-shadow:0 18px 70px rgba(14,165,233,.38);}
+.loginLogo .name{font-size:31px;font-weight:900;color:#fff;letter-spacing:.5px;}
+.loginLogo .sub{font-size:13px;color:rgba(255,255,255,.86);margin-top:9px;}
+.loginCard{margin-top:16px;background:rgba(8,14,28,.92);border:1px solid rgba(255,255,255,.12);border-radius:28px;box-shadow:0 26px 80px rgba(0,0,0,.48);padding:26px;}
+.loginCard h1{font-size:22px;color:#fff;margin:0 0 6px 0;}
+.loginCard p{font-size:12px;color:#94a3b8;margin:0 0 18px 0;}
+.sidebar{position:absolute;left:0;top:0;bottom:0;width:262px;background:linear-gradient(180deg,#071122,#101b33);border-right:1px solid rgba(255,255,255,.08);padding:18px;}
+body.light .sidebar{background:linear-gradient(180deg,#ffffff,#eff6ff);border-right-color:#dbeafe;}
+.brand{height:96px;border-radius:22px;background:linear-gradient(135deg,#0ea5e9,#7c3aed 55%,#f59e0b);padding:17px;box-shadow:0 16px 45px rgba(14,165,233,.25);margin-bottom:14px;overflow:hidden;position:relative;}
+.brand:after{content:"";position:absolute;right:-30px;bottom:-38px;width:120px;height:120px;border-radius:999px;background:rgba(255,255,255,.16);}
+.brand .logo{font-size:22px;font-weight:900;color:#fff;letter-spacing:.4px;}
+.brandYellow{color:#facc15;text-shadow:0 2px 10px rgba(250,204,21,.25);}
+.brandRed{color:#ef4444;text-shadow:0 2px 10px rgba(239,68,68,.25);}
+.brand .sub{font-size:11px;color:rgba(255,255,255,.86);margin-top:6px;line-height:1.35;}
+.menu{position:absolute;left:18px;right:18px;top:128px;bottom:18px;overflow:auto;padding-right:3px;}
+.menu button{display:block;width:100%;height:41px;margin:6px 0;border:0;border-radius:15px;text-align:left;padding:0 13px;color:#cbd5e1;background:transparent;font-size:13px;font-weight:800;cursor:pointer;}
+.menu button:hover{background:rgba(255,255,255,.08);color:#fff;}
+.menu button.active{color:#fff;background:linear-gradient(90deg,#2563eb,#06b6d4);box-shadow:0 10px 26px rgba(37,99,235,.28);}
+body.light .menu button{color:#334155;}
+body.light .menu button:hover{background:#e0f2fe;color:#0f172a;}
+.menu .ico{display:inline-block;width:28px;text-align:center;}
+.statusDot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-right:6px;box-shadow:0 0 10px #22c55e;}
+.savePill{display:inline-block;height:30px;line-height:28px;padding:0 10px;margin-right:6px;border-radius:999px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#bbf7d0;font-size:11px;font-weight:900;vertical-align:middle;}
+body.light .savePill{background:#f0fdf4;border-color:#bbf7d0;color:#166534;}
+.main{position:absolute;left:262px;right:0;top:0;bottom:0;overflow:hidden;}
+.topbar{height:78px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(15,23,42,.74);padding:14px 22px;position:relative;}
+body.light .topbar{background:rgba(255,255,255,.86);border-bottom-color:#e2e8f0;}
+.topbar h1{font-size:20px;margin:0;color:#fff;}
+body.light .topbar h1{color:#0f172a;}
+.topbar .meta{font-size:12px;color:#94a3b8;margin-top:5px;}
+body.light .topbar .meta{color:#64748b;}
+.topActions{position:absolute;right:18px;top:13px;text-align:right;}
+.globalSearch{position:absolute;right:390px;top:18px;width:300px;}
+.content{position:absolute;left:0;right:0;top:78px;bottom:0;overflow:auto;padding:22px;}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.045));border:1px solid rgba(255,255,255,.09);border-radius:24px;padding:18px;margin-bottom:16px;box-shadow:0 14px 40px rgba(0,0,0,.20);}
+body.light .card{background:rgba(255,255,255,.88);border-color:#e2e8f0;box-shadow:0 14px 36px rgba(15,23,42,.08);}
+.cardHeader{display:table;width:100%;margin-bottom:12px;}
+.cardHeader .left{display:table-cell;vertical-align:middle;}
+.cardHeader .right{display:table-cell;text-align:right;vertical-align:middle;}
+.helpPill{display:inline-block;border-radius:999px;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.28);color:#93c5fd;padding:7px 10px;font-size:11px;font-weight:900;}
+body.light .helpPill{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe;}
+.formHint{font-size:11px;color:#94a3b8;margin-top:8px;line-height:1.45;}
+body.light .formHint{color:#64748b;}
+.nextIdBox{border:1px dashed rgba(56,189,248,.45);border-radius:16px;padding:12px;background:rgba(14,165,233,.08);font-size:12px;color:#bae6fd;font-weight:900;}
+body.light .nextIdBox{background:#eff6ff;color:#075985;border-color:#7dd3fc;}
+
+.card h2,.card h3{margin:0 0 13px 0;color:#fff;}
+body.light .card h2,body.light .card h3{color:#0f172a;}
+.grid{display:table;width:100%;border-spacing:14px 0;margin-left:-14px;}
+.col{display:table-cell;vertical-align:top;}
+.kpi{height:126px;border-radius:23px;padding:17px;position:relative;overflow:hidden;}
+.kpi:after{content:"";position:absolute;right:-30px;bottom:-35px;width:120px;height:120px;border-radius:100px;background:rgba(255,255,255,.15);}
+.kpi .label{font-size:12px;color:rgba(255,255,255,.80);font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
+.kpi .value{font-size:30px;font-weight:900;color:#fff;margin-top:13px;}
+.kpi .small{font-size:11px;color:rgba(255,255,255,.78);margin-top:5px;}
+.gradBlue{background:linear-gradient(135deg,#2563eb,#06b6d4);}
+.gradPurple{background:linear-gradient(135deg,#7c3aed,#ec4899);}
+.gradOrange{background:linear-gradient(135deg,#f97316,#facc15);}
+.gradGreen{background:linear-gradient(135deg,#16a34a,#14b8a6);}
+.gradRed{background:linear-gradient(135deg,#dc2626,#f43f5e);}
+.gradDark{background:linear-gradient(135deg,#111827,#334155);}
+.btn{border:0;border-radius:14px;min-height:38px;padding:0 14px;margin:3px;cursor:pointer;font-weight:900;color:#fff;box-shadow:0 9px 22px rgba(0,0,0,.22);font-family:Segoe UI,Arial,sans-serif;}
+.btn:active{transform:translateY(1px);}
+.btnBlue{background:linear-gradient(90deg,#2563eb,#0ea5e9);}
+.btnGreen{background:linear-gradient(90deg,#16a34a,#22c55e);}
+.btnPurple{background:linear-gradient(90deg,#7c3aed,#ec4899);}
+.btnOrange{background:linear-gradient(90deg,#f97316,#f59e0b);}
+.btnRed{background:linear-gradient(90deg,#dc2626,#f43f5e);}
+.btnDark{background:linear-gradient(90deg,#334155,#0f172a);}
+.btnGhost{background:rgba(255,255,255,.08);color:#e5e7eb;border:1px solid rgba(255,255,255,.12);box-shadow:none;}
+body.light .btnGhost{background:#f8fafc;color:#334155;border-color:#cbd5e1;}
+.btnSmall{min-height:30px;font-size:11px;border-radius:10px;padding:0 9px;}
+.input,.select,.textarea{width:100%;background:#0b1222;border:1px solid rgba(255,255,255,.11);border-radius:13px;color:#e5eefc;padding:10px 12px;height:40px;outline:0;font-family:Segoe UI,Arial,sans-serif;}
+.textarea{height:86px;resize:none;}
+.input:focus,.select:focus,.textarea:focus{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.14);}
+body.light .input,body.light .select,body.light .textarea{background:#fff;color:#0f172a;border-color:#cbd5e1;}
+.lbl{font-size:11px;color:#93a4bc;font-weight:900;margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:.04em;}
+body.light .lbl{color:#475569;}
+.formGrid{display:table;width:100%;border-spacing:12px 10px;margin-left:-12px;}
+.formRow{display:table-row;}
+.formCell{display:table-cell;vertical-align:top;}
+.tableWrap{overflow:auto;border-radius:18px;border:1px solid rgba(255,255,255,.08);}
+body.light .tableWrap{border-color:#e2e8f0;}
+table{width:100%;border-collapse:collapse;background:#0b1222;}
+body.light table{background:#fff;}
+th{background:#111c31;color:#cbd5e1;font-size:11px;text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:12px;border-bottom:1px solid rgba(255,255,255,.07);white-space:nowrap;}
+body.light th{background:#f1f5f9;color:#334155;border-bottom-color:#e2e8f0;}
+td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;color:#e2e8f0;vertical-align:middle;white-space:nowrap;}
+body.light td{color:#0f172a;border-bottom-color:#e2e8f0;}
+tr:hover td{background:rgba(59,130,246,.07);}
+body.light tr:hover td{background:#eff6ff;}
+.badge{display:inline-block;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;}
+.bNew{background:#1e3a8a;color:#bfdbfe;}
+.bWarn{background:#78350f;color:#fde68a;}
+.bGood{background:#064e3b;color:#bbf7d0;}
+.bBad{background:#7f1d1d;color:#fecaca;}
+.bInfo{background:#164e63;color:#a5f3fc;}
+.bNeutral{background:#334155;color:#e2e8f0;}
+hr.sep{border:0;border-top:1px solid rgba(255,255,255,.08);margin:14px 0;}
+.softText{color:#94a3b8;font-size:12px;}
+body.light .softText{color:#64748b;}
+.toast{position:absolute;right:24px;bottom:24px;z-index:10000;background:#0f172a;border:1px solid rgba(255,255,255,.14);padding:14px 16px;border-radius:16px;color:#fff;box-shadow:0 14px 50px rgba(0,0,0,.4);display:none;max-width:450px;font-size:13px;}
+body.light .toast{background:#fff;color:#0f172a;border-color:#e2e8f0;}
+.modal{display:none;position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.62);z-index:9999;}
+.modalBox{position:absolute;left:50%;top:50%;width:820px;max-width:92%;max-height:86%;overflow:auto;background:#0b1222;border:1px solid rgba(255,255,255,.12);border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:18px;transform:translate(-50%,-50%);}
+body.light .modalBox{background:#fff;border-color:#e2e8f0;}
+.modalTitle{font-size:18px;font-weight:900;color:#fff;margin-bottom:12px;}
+body.light .modalTitle{color:#0f172a;}
+.closeX{position:absolute;right:16px;top:14px;border:0;background:#1e293b;color:#fff;border-radius:10px;width:30px;height:30px;cursor:pointer;}
+.invoicePaper{background:#fff;color:#0f172a;border-radius:18px;padding:14mm;margin:0 auto;width:210mm;min-height:297mm;max-width:100%;box-shadow:0 18px 60px rgba(0,0,0,.28);border:1px solid #e5e7eb;box-sizing:border-box;}
+.invoicePaper{position:relative;overflow:hidden;}
+.invoicePaper>*:not(.invoiceBrandSeal){position:relative;z-index:1;}
+.invoiceBrandSeal{position:absolute;right:16mm;bottom:24mm;width:42mm;height:42mm;opacity:.14;filter:alpha(opacity=14);transform:rotate(-10deg);z-index:0;pointer-events:none;}
+.invoicePaper table{background:#fff;color:#0f172a;}
+.invoicePaper th{background:#0f172a;color:#fff;font-size:10px;padding:10px;}
+.invoicePaper td{color:#0f172a;border-color:#e5e7eb;white-space:normal;font-size:12px;line-height:1.45;}
+.invoiceHeader{border-bottom:3px solid #0f172a;padding-bottom:14px;margin-bottom:16px;}
+.invTitle{font-size:34px;font-weight:900;color:#0f172a;letter-spacing:.05em;}
+.docNo{font-size:13px;color:#475569;margin-top:6px;font-weight:800;}
+.invBox{border:1px solid #e5e7eb;border-radius:14px;padding:14px;background:#f8fafc;min-height:96px;}
+.invLabel{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;font-weight:900;margin-bottom:6px;}
+.invoiceMini{font-size:11px;color:#64748b;line-height:1.55;}
+.summaryTbl td,.summaryTbl th{padding:9px 11px;}
+.paidStamp{font-size:28px;color:#16a34a;border:4px solid #16a34a;border-radius:12px;padding:8px 16px;display:inline-block;font-weight:900;transform:rotate(-8deg);letter-spacing:.05em;opacity:.82;}
+.receiptRibbon{display:inline-block;background:#dcfce7;color:#166534;border:1px solid #86efac;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900;margin-top:9px;}
+.dueRibbon{display:inline-block;background:#fef3c7;color:#92400e;border:1px solid #fde68a;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900;margin-top:9px;}
+.logoImg{max-height:66px;max-width:230px;object-fit:contain;}
+.qrImg{width:112px;height:112px;object-fit:contain;border:1px solid #e5e7eb;border-radius:10px;padding:6px;background:#fff;}
+.searchBar{position:relative;}
+.searchBar .input{padding-left:38px;}
+.searchIcon{position:absolute;left:14px;top:11px;color:#64748b;}
+.progress{height:10px;background:#1e293b;border-radius:10px;overflow:hidden;}
+.progress span{display:block;height:10px;background:linear-gradient(90deg,#06b6d4,#22c55e);}
+.empty{padding:24px;text-align:center;color:#94a3b8;}
+.inlineActions{white-space:nowrap;}
+.pageSearch{max-width:360px;margin-bottom:12px;}
+@media print{
+ @page{size:A4;margin:10mm;}
+ body{background:#fff!important;}
+ .sidebar,.topbar,.noPrint,.toast,.modal{display:none!important;}
+ .app,.main,.content{position:static;left:auto;top:auto;right:auto;bottom:auto;overflow:visible;background:#fff;border:0;box-shadow:none;border-radius:0;padding:0;margin:0;}
+ .invoicePaper{box-shadow:none!important;border-radius:0!important;width:190mm!important;min-height:277mm!important;max-width:none!important;border:0!important;margin:0!important;padding:0!important;}
+ .invoiceBrandSeal{opacity:.12!important;filter:alpha(opacity=12)!important;}
+}
+</style>
+</head>
+<body class="dark">
+<div id="loginPage" class="loginPage">
+  <div class="loginShell">
+    <div class="loginLogo">
+      <div class="name"><span class="brandYellow">KEDAI REPAIR</span> <span class="brandRed">PHONE</span></div>
+      <div class="sub">AEPro System V3 • Secure • Stable • Clean</div>
+    </div>
+    <div class="loginCard">
+      <h1>Login System</h1>
+      
+      <label class="lbl">Username</label>
+      <input id="loginUser" class="input" value="" autocomplete="off" />
+      <div style="height:10px"></div>
+      <label class="lbl">Password</label>
+      <input id="loginPass" class="input" type="password" value="" autocomplete="off" onkeydown="if(event.keyCode==13){login();}" />
+      <div id="loginMsg" class="softText" style="min-height:22px;margin-top:12px;"></div>
+      <button class="btn btnBlue" style="width:100%;height:46px;margin:10px 0 0 0;" onclick="login()">LOGIN</button>
+      <button class="btn btnGhost" style="width:100%;height:38px;margin:10px 0 0 0;" onclick="toggleTheme()">Switch Dark / Light Mode</button>
+    </div>
+  </div>
+</div>
+
+<div id="appShell" class="app" style="display:none;">
+  <div class="sidebar">
+    <div class="brand">
+      <div class="logo" id="brandName"><span class="brandYellow">KEDAI REPAIR</span> <span class="brandRed">PHONE</span></div>
+      <div class="sub" id="brandSub">Premium Phone Repair Management System</div>
+    </div>
+    <div class="menu" id="menu"></div>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="meta" id="pageMeta">Welcome</div>
+      <div class="globalSearch noPrint">
+        <div class="searchBar"><span class="searchIcon">⌕</span><input id="globalSearch" class="input" onkeyup="globalSearchChanged()" /></div>
+      </div>
+      <div class="topActions noPrint">
+        <button class="btn btnGhost btnSmall" onclick="toggleTheme()">☾ / ☀</button>
+        <button class="btn btnOrange btnSmall" onclick="backupDB()">Backup</button>
+        <button class="btn btnRed btnSmall" onclick="logout()">Logout</button>
+      </div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<div id="modal" class="modal"><div class="modalBox"><button class="closeX" onclick="closeModal()">×</button><div id="modalContent"></div></div></div>
+<div id="toast" class="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+var fso=null, shell=null, APP_FOLDER="", DATA_FOLDER="", DB_PATH="", ASSET_FOLDER="", BACKUP_FOLDER="", CSV_FOLDER="", MASTER_EXCEL_PATH="";
+var DB=null, SETTINGS={}, CURRENT_USER="", CURRENT_PAGE="dashboard", CURRENT_THEME="dark", GLOBAL_Q="", PAGE_Q="";
+var ONLINE_ENABLED=false, ONLINE_DOC_REF=null, ONLINE_LOADED=false, RPT_FROM="", RPT_TO="", RPT_STATUS="", RPT_PAYMENT="", RPT_TECH="", RPT_PHONE="";
+var LOGIN_FAILS=0, LOGIN_LOCK_UNTIL=0;
+var MENUS=[
+ ["dashboard","⌂","Dashboard"],["newjob","+","New Job"],["jobs","▦","Repair Jobs"],["customers","☻","Customers"],
+ ["inventory","▣","Inventory"],["payments","$","Payments"],["warranty","✓","Warranty"],
+ ["invoice","▤","Invoice"],["pricebook","≡","PriceBook"],["reports","◷","Reports"],["settings","⚙","Settings"]
+];
+
+window.onerror=function(msg,url,line){try{toast("System notice: "+msg+" at line "+line);}catch(e){} return true;};
+
+function init(){
+ try{window.resizeTo(1240,760);window.moveTo(40,25);}catch(e){}
+ try{fso=new ActiveXObject("Scripting.FileSystemObject"); shell=new ActiveXObject("WScript.Shell");}catch(e){fso=null; shell=null;}
+ if(fso){
+  APP_FOLDER=getAppFolder(); DATA_FOLDER=pathJoin(APP_FOLDER,"data"); ASSET_FOLDER=pathJoin(APP_FOLDER,"assets"); BACKUP_FOLDER=pathJoin(APP_FOLDER,"backups"); CSV_FOLDER=pathJoin(APP_FOLDER,"excel_data"); DB_PATH=pathJoin(DATA_FOLDER,"database.json"); MASTER_EXCEL_PATH=pathJoin(APP_FOLDER,"AE_PRO_FIX_LIVE_DATABASE.xls");
+  ensureFolder(DATA_FOLDER); ensureFolder(ASSET_FOLDER); ensureFolder(BACKUP_FOLDER); ensureFolder(CSV_FOLDER);
+ }else{
+  APP_FOLDER=""; DATA_FOLDER="data"; ASSET_FOLDER="assets"; BACKUP_FOLDER="backups"; CSV_FOLDER="excel_data"; DB_PATH="data/database.json"; MASTER_EXCEL_PATH="AE_PRO_FIX_LIVE_DATABASE.xls";
+ }
+ initOnlineDB();
+ document.getElementById("loginPass").focus();
+}
+
+function getAppFolder(){if(!fso){return "";} var p=decodeURIComponent(location.pathname); if(p.charAt(0)=="/"){p=p.substring(1);} p=p.replace(/\//g,"\\"); return fso.GetParentFolderName(p);}
+function pathJoin(a,b){try{if(fso){return fso.BuildPath(a,b);}}catch(e){} return a?(a+"/"+b):b;}
+function ensureFolder(p){try{if(fso && !fso.FolderExists(p)){fso.CreateFolder(p);}}catch(e){}}
+function readText(p){try{if(!fso){return localStorage.getItem("AEProManagementV1_DB")||"";} var s=new ActiveXObject("ADODB.Stream"); s.Type=2; s.Charset="utf-8"; s.Open(); s.LoadFromFile(p); var t=s.ReadText(); s.Close(); return t;}catch(e){return "";}}
+function writeText(p,t){try{if(!fso){if(String(p).indexOf("database")>=0){localStorage.setItem("AEProManagementV1_DB",t);} return;} var s=new ActiveXObject("ADODB.Stream"); s.Type=2; s.Charset="utf-8"; s.Open(); s.WriteText(t); s.SaveToFile(p,2); s.Close();}catch(e){}}
+function copyFile(a,b){try{if(fso){fso.CopyFile(a,b,true);}}catch(e){}}
+function esc(s){s=String(s==null?"":s); return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function jsq(s){s=String(s==null?"":s); return s.replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/\r/g," ").replace(/\n/g," ");}
+function trim(s){return String(s==null?"":s).replace(/^\s+|\s+$/g,"");}
+function num(v){v=String(v==null?"":v).replace(/,/g,""); var n=parseFloat(v); return isNaN(n)?0:n;}
+function pad(n){return n<10?"0"+n:String(n);}
+function todayISO(){var d=new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function nowText(){var d=new Date(); return todayISO()+" "+pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds());}
+function stamp(){var d=new Date(); return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+"_"+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds());}
+function addDays(s,days){var d=parseDate(s||todayISO()); d.setDate(d.getDate()+num(days)); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function parseDate(s){s=String(s||""); var p=s.split("-"); if(p.length>=3){return new Date(parseInt(p[0],10),parseInt(p[1],10)-1,parseInt(p[2],10));} return new Date();}
+function monthKey(s){s=String(s||""); return s.length>=7?s.substr(0,7):todayISO().substr(0,7);}
+function fileUrl(rel){var p=rel; if(fso && p.indexOf(":")<0){p=pathJoin(APP_FOLDER,rel);} p=p.replace(/\\/g,"/"); if(!fso){return encodeURI(p);} return "file:///"+encodeURI(p);}
+
+function defaultDB(){
+ return {"meta":{"version":"V3 Online","app":"AEPro System V3","created":"2026-06-22","updated":"2026-06-22","excelSync":"Manual Download Only","onlineSync":"Firebase Firestore Ready"},"SETTINGS":[{"Key":"BusinessName","Value":"KEDAI REPAIR PHONE"},{"Key":"Tagline","Value":"Premium Phone Repair Management System"},{"Key":"Phone","Value":"+6012-3456789"},{"Key":"WhatsApp","Value":"60123456789"},{"Key":"Location","Value":"Tandop, Alor Setar"},{"Key":"Email","Value":""},{"Key":"SSMNo","Value":""},{"Key":"BankName","Value":"Maybank"},{"Key":"BankAccount","Value":"1234567890"},{"Key":"AccountName","Value":"KEDAI REPAIR PHONE"},{"Key":"Currency","Value":"RM"},{"Key":"DefaultWarrantyDays","Value":"30"},{"Key":"InvoiceNote","Value":""},{"Key":"WarrantyTerms","Value":"Warranty bermula selepas repair siap atau pickup. Warranty tidak cover crack, water damage, short, board tamper, atau kerosakan baru selepas pickup."},{"Key":"Theme","Value":"dark"},{"Key":"LogoPath","Value":"assets/ae_pro_fix_logo.png"},{"Key":"QRPath","Value":"assets/payment_qr.png"},{"Key":"AutoBackup","Value":"Yes"},{"Key":"ExcelAutoSync","Value":"No"},{"Key":"SyncMode","Value":"Firebase Online Database"},{"Key":"JobPrefix","Value":"AEP-JOB"},{"Key":"CustomerPrefix","Value":"AEP-CUS"},{"Key":"PartPrefix","Value":"AEP-PRT"},{"Key":"PaymentPrefix","Value":"AEP-PAY"},{"Key":"WarrantyPrefix","Value":"AEP-WTY"},{"Key":"InvoicePrefix","Value":"AEP-INV"},{"Key":"ReceiptPrefix","Value":"AEP-RCP"}],"USERS":[{"UserID":"USR-001","Username":"admin","Password":"","PasswordHash":passwordHash("1234"),"Role":"Owner","Status":"Active","DisplayName":"Admin"}],"JOBS":[],"CUSTOMERS":[],"INVENTORY":[],"PRICEBOOK":[],"PAYMENTS":[],"PART_USAGE":[],"WARRANTY":[],"EXPENSES":[],"STAFF":[],"DROPDOWNS":[{"Type":"JobStatus","Value":"Received"},{"Type":"JobStatus","Value":"Diagnosing"},{"Type":"JobStatus","Value":"Waiting Parts"},{"Type":"JobStatus","Value":"In Repair"},{"Type":"JobStatus","Value":"Ready Pickup"},{"Type":"JobStatus","Value":"Completed"},{"Type":"JobStatus","Value":"Cancelled"},{"Type":"Priority","Value":"Normal"},{"Type":"Priority","Value":"Urgent"},{"Type":"Priority","Value":"High"},{"Type":"Priority","Value":"Low"},{"Type":"Brand","Value":"Apple"},{"Type":"Brand","Value":"Samsung"},{"Type":"Brand","Value":"OPPO"},{"Type":"Brand","Value":"vivo"},{"Type":"Brand","Value":"Xiaomi"},{"Type":"Brand","Value":"realme"},{"Type":"Brand","Value":"HONOR"},{"Type":"Brand","Value":"Huawei"},{"Type":"Brand","Value":"Infinix"},{"Type":"Brand","Value":"TECNO"},{"Type":"Brand","Value":"Google"},{"Type":"Brand","Value":"Sony"},{"Type":"Brand","Value":"Other"},{"Type":"PaymentMethod","Value":"Cash"},{"Type":"PaymentMethod","Value":"Bank Transfer"},{"Type":"PaymentMethod","Value":"QR Pay"},{"Type":"PaymentMethod","Value":"Card"},{"Type":"PaymentMethod","Value":"E-Wallet"}],"LOGS":[],"APPOINTMENTS":[],"SUPPLIERS":[],"QUOTES":[],"INVOICES_DB":[],"SYSTEM_AUDIT":[],"INVENTORY_LEDGER":[]};
+}
+
+function ensureArrays(){
+ var a=["SETTINGS","USERS","JOBS","CUSTOMERS","INVENTORY","PRICEBOOK","PAYMENTS","PART_USAGE","WARRANTY","EXPENSES","STAFF","DROPDOWNS","LOGS","APPOINTMENTS","SUPPLIERS","QUOTES","INVOICES_DB","SYSTEM_AUDIT"];
+ for(var i=0;i<a.length;i++){if(!DB[a[i]]){DB[a[i]]=[];}}
+ normalizeCustomersByPhone();
+}
+function dbArrayNames(){return ["SETTINGS","USERS","JOBS","CUSTOMERS","INVENTORY","INVENTORY_LEDGER","PRICEBOOK","PAYMENTS","WARRANTY","EXPENSES","STAFF","DROPDOWNS","LOGS","APPOINTMENTS","SUPPLIERS","QUOTES","INVOICES_DB","SYSTEM_AUDIT"];}
+function workbookSheetNames(){return ["DASHBOARD","DATABASE_INFO","JOBS","CUSTOMERS","INVENTORY","INVENTORY_LEDGER","PRICEBOOK","PAYMENTS","WARRANTY","EXPENSES","STAFF","USERS","SETTINGS","DROPDOWNS","APPOINTMENTS","SUPPLIERS","QUOTES","INVOICES_DB","SYSTEM_AUDIT"];} 
+function headersForSheet(name){
+ var h={
+  "DASHBOARD":["Metric","Value","Updated"],
+  "DATABASE_INFO":["Key","Value"],
+  "JOBS":["JobID","InvoiceNo","ReceiptNo","DateIn","DueDate","Status","Priority","CustomerID","CustomerName","Phone","Brand","Model","IMEI","Description","Item","ServiceCategory","ServiceName","Complaint","LockPassword","Technician","SellPrice","Cost","Deposit","WarrantyDays","Notes","CreatedAt","UpdatedAt"],
+  "CUSTOMERS":["CustomerID","CustomerName","Phone","Email","Address","TotalJobs","Notes","CreatedAt"],
+  "INVENTORY":["PartID","PartName","Category","Brand","Model","Supplier","StockQty","MinStock","Cost","SellPrice","Location","Status","Notes","CreatedAt"],
+  "INVENTORY_LEDGER":["LedgerID","Date","PartID","PartName","Type","Qty","BeforeQty","AfterQty","Reference","Notes","User"],
+  "PRICEBOOK":["PriceID","Item","Description","Category","Brand","Model","Cost","SellPrice","WarrantyDays","Status","Notes"],
+  "PAYMENTS":["PaymentID","JobID","Date","Amount","Method","Reference","Notes","CreatedAt"],
+  "WARRANTY":["WarrantyID","JobID","CustomerID","Item","StartDate","EndDate","Status","Notes","CreatedAt"],
+  "EXPENSES":["ExpenseID","Date","Category","Description","Amount","PaymentMethod","Notes","CreatedAt"],
+  "STAFF":["StaffID","Name","Phone","Role","Status","Notes"],
+  "USERS":["UserID","Username","PasswordHash","Role","Status","DisplayName"],
+  "SETTINGS":["Key","Value"],
+  "DROPDOWNS":["Type","Value"],
+  "APPOINTMENTS":["AppointmentID","Date","Time","CustomerName","Phone","Device","Issue","Status","Notes"],
+  "SUPPLIERS":["SupplierID","SupplierName","Phone","Email","Address","Notes"],
+  "QUOTES":["QuoteID","Date","CustomerName","Phone","Item","Description","Amount","Status","Notes"],
+  "INVOICES_DB":["InvoiceID","DocumentID","DocumentType","JobID","Date","Customer","Total","Paid","Balance","Status","CreatedAt"],
+  "SYSTEM_AUDIT":["Time","User","Action","Detail"]
+ };
+ return h[name]||[];
+}
+function fileTime(p){try{return new Date(fso.GetFile(p).DateLastModified).getTime();}catch(e){return 0;}}
+function loadDB(){
+ if(DB){return true;}
+ var loaded=false;
+ var lt=readText(DB_PATH);
+ if(lt){try{DB=JSON.parse(lt); ensureArrays(); loaded=true;}catch(e){loaded=false;}}
+ if(!loaded && fso && fso.FileExists(DB_PATH)){
+  var t=readText(DB_PATH);
+  try{DB=JSON.parse(t); ensureArrays(); loaded=true;}catch(x){try{copyFile(DB_PATH,pathJoin(BACKUP_FOLDER,"database_corrupt_"+stamp()+".json"));}catch(y){} loaded=false;}
+ }
+ if(!loaded){DB=defaultDB();}
+ ensureArrays(); migrateUsers(); loadSettings(); saveDB(); return true;
+}
+
+function saveDB(){
+ ensureArrays(); migrateUsers(); DB.meta=DB.meta||{}; DB.meta.version="V3 Online"; DB.meta.updated=nowText(); DB.meta.app="AEPro System V3";
+ DB.meta.excelSync="Manual Download Only"; DB.meta.onlineSync=ONLINE_ENABLED?"Firebase Firestore":"Local";
+ try{writeText(DB_PATH,JSON.stringify(DB,null,2));}catch(e){}
+ loadSettings(); saveOnlineDB();
+}
+
+function loadDBFromMasterExcel(){return false;}
+
+function readSheetRows(xml,name){
+ var safe=xmlSafeName(name), start=xml.indexOf('<Worksheet ss:Name="'+safe+'"');
+ if(start<0){return null;} var end=xml.indexOf('</Worksheet>',start); if(end<0){return null;} var body=xml.substring(start,end);
+ var rows=body.match(/<Row[\s\S]*?<\/Row>/g); if(!rows||rows.length<1){return [];} var headers=parseXmlRow(rows[0]); if(headers.length==1 && headers[0]=="NoData"){return [];} var out=[];
+ for(var r=1;r<rows.length;r++){var cells=parseXmlRow(rows[r]); var o={}, empty=true; for(var c=0;c<headers.length;c++){var v=cells[c]||""; o[headers[c]]=v; if(v!=""){empty=false;}} if(!empty){out.push(o);}}
+ return out;
+}
+function parseXmlRow(row){var out=[], cells=row.match(/<Cell[\s\S]*?<\/Cell>/g)||[]; for(var i=0;i<cells.length;i++){var m=cells[i].match(/<Data[^>]*>([\s\S]*?)<\/Data>/); out.push(xmlUnesc(m?m[1]:""));} return out;}
+function xmlUnesc(v){return String(v==null?"":v).replace(/&quot;/g,'"').replace(/&gt;/g,">").replace(/&lt;/g,"<").replace(/&amp;/g,"&");}
+function dashboardRows(){
+ var jobs=DB.JOBS||[], open=0, completed=0, unpaid=0, sales=0, paid=0, cost=0, low=0;
+ for(var i=0;i<jobs.length;i++){var j=jobs[i]; if(j.Status!="Completed" && j.Status!="Cancelled"){open++;} if(j.Status=="Completed"){completed++;} if(paymentStatus(j)!="Paid"){unpaid++;} sales+=jobTotal(j); paid+=jobPaid(j.JobID); cost+=num(j.Cost);} 
+ for(i=0;i<(DB.INVENTORY||[]).length;i++){if(num(DB.INVENTORY[i].StockQty)<=num(DB.INVENTORY[i].MinStock)){low++;}}
+ return [{"Metric":"Open Jobs","Value":open,"Updated":nowText()},{"Metric":"Completed Jobs","Value":completed,"Updated":nowText()},{"Metric":"Unpaid Jobs","Value":unpaid,"Updated":nowText()},{"Metric":"Total Sales","Value":sales,"Updated":nowText()},{"Metric":"Collected","Value":paid,"Updated":nowText()},{"Metric":"Profit Estimate","Value":sales-cost,"Updated":nowText()},{"Metric":"Low Stock","Value":low,"Updated":nowText()}];
+}
+function databaseInfoRows(){return [{"Key":"BusinessName","Value":SETTINGS.BusinessName||"KEDAI REPAIR PHONE"},{"Key":"System","Value":"AEPro System V3"},{"Key":"Version","Value":"V3 Online"},{"Key":"LastUpdated","Value":nowText()},{"Key":"SyncMode","Value":ONLINE_ENABLED?"Firebase Firestore Online":"Local JSON / Browser Storage"},{"Key":"Instruction","Value":"Online data uses Firebase Firestore when firebase-config.js is filled and deployed on Cloudflare Pages."}];}
+
+function getSheetData(name){if(name=="DASHBOARD"){return dashboardRows();} if(name=="DATABASE_INFO"){return databaseInfoRows();} return DB[name]||[];}
+function buildMasterWorkbookXML(){var names=workbookSheetNames(); var xml='<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles><Style ss:ID="hdr"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#0F172A" ss:Pattern="Solid"/></Style><Style ss:ID="money"><NumberFormat ss:Format="#,##0.00"/></Style></Styles>'; for(var i=0;i<names.length;i++){xml+=sheetXML(names[i],getSheetData(names[i]));} xml+='</Workbook>'; return xml;}
+function syncMasterExcel(){return false;}
+
+function loadSettings(){SETTINGS={}; if(!DB){return;} for(var i=0;i<DB.SETTINGS.length;i++){SETTINGS[DB.SETTINGS[i].Key]=DB.SETTINGS[i].Value;} ensureSetting("ReceiptPrefix","AEP-RCP"); ensureSetting("ExcelAutoSync","No"); ensureSetting("SyncMode",ONLINE_ENABLED?"Firebase Online Database":"Local Database"); ensureSetting("DefaultWarrantyDays","30"); CURRENT_THEME=SETTINGS.Theme||"dark"; document.body.className=CURRENT_THEME;}
+function setSetting(k,v){var found=false; for(var i=0;i<DB.SETTINGS.length;i++){if(DB.SETTINGS[i].Key==k){DB.SETTINGS[i].Value=v; found=true;}} if(!found){DB.SETTINGS.push({"Key":k,"Value":v});} SETTINGS[k]=v;}
+function money(v){var n=num(v), sign=n<0?"-":""; n=Math.abs(n); var parts=n.toFixed(2).split("."), x=parts[0], rgx=/(\d+)(\d{3})/; while(rgx.test(x)){x=x.replace(rgx,"$1"+","+"$2");} return (SETTINGS.Currency||"RM")+" "+sign+x+"."+parts[1];}
+function getList(type){var out=[]; for(var i=0;i<DB.DROPDOWNS.length;i++){if(DB.DROPDOWNS[i].Type==type){out.push(DB.DROPDOWNS[i].Value);}} return out;}
+function opt(type,val){var a=getList(type), h=""; for(var i=0;i<a.length;i++){h+="<option "+(a[i]==val?"selected":"")+">"+esc(a[i])+"</option>";} return h;}
+function digits(n,len){var s=String(n); while(s.length<len){s="0"+s;} return s;}
+function compactDate(s){s=String(s||todayISO()).replace(/-/g,""); if(s.length<8){s=todayISO().replace(/-/g,"");} return s.substr(0,8);}
+function nextID(prefixKey, arrName, field){var prefix=SETTINGS[prefixKey]||prefixKey, arr=DB[arrName]||[], max=0; for(var i=0;i<arr.length;i++){var s=String(arr[i][field]||""); var m=s.match(/(\d+)$/); if(m){max=Math.max(max,parseInt(m[1],10));}} return prefix+"-"+digits(max+1,5);}
+function nextDateID(prefixKey, arrName, field, dateValue){var prefix=SETTINGS[prefixKey]||prefixKey, key=compactDate(dateValue), arr=DB[arrName]||[], max=0; for(var i=0;i<arr.length;i++){var s=String(arr[i][field]||""); if(s.indexOf(prefix+"-"+key+"-")===0){var m=s.match(/(\d+)$/); if(m){max=Math.max(max,parseInt(m[1],10));}}} return prefix+"-"+key+"-"+digits(max+1,5);}
+function ensureSetting(k,v){var found=false; for(var i=0;i<DB.SETTINGS.length;i++){if(DB.SETTINGS[i].Key==k){found=true; if(DB.SETTINGS[i].Value===""){DB.SETTINGS[i].Value=v;}}} if(!found){DB.SETTINGS.push({"Key":k,"Value":v});} SETTINGS[k]=getSetting(k,v);}
+function getSetting(k,def){for(var i=0;i<(DB.SETTINGS||[]).length;i++){if(DB.SETTINGS[i].Key==k){return DB.SETTINGS[i].Value;}} return def;}
+function isPaidComplete(j){return jobTotal(j)>0 && jobPaid(j.JobID)>=jobTotal(j);}
+function docTypeForJob(j){return isPaidComplete(j)?"OFFICIAL RECEIPT":"INVOICE";}
+function docNumberForJob(j){var paid=isPaidComplete(j), key=paid?"ReceiptNo":"InvoiceNo", prefix=paid?"ReceiptPrefix":"InvoicePrefix"; if(!j[key]){j[key]=nextDateID(prefix,"JOBS",key,todayISO()); j.UpdatedAt=nowText(); try{saveDB();}catch(e){}} return j[key];}
+function balanceLabel(j){return isPaidComplete(j)?"Paid Complete":money(jobBalance(j));}
+function timeShort(){var d=new Date(); return pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds());}
+function setSaveStatus(msg){try{var e=document.getElementById("saveStatus"); if(e){e.innerHTML=esc(msg);}}catch(x){}}
+
+function initOnlineDB(){
+ try{
+  if(typeof firebase!="undefined" && window.AEPRO_FIREBASE_CONFIG && window.AEPRO_FIREBASE_CONFIG.projectId){
+   if(!firebase.apps.length){firebase.initializeApp(window.AEPRO_FIREBASE_CONFIG);}
+   var cfg=window.AEPRO_FIREBASE_DOC||{};
+   ONLINE_DOC_REF=firebase.firestore().collection(cfg.collection||"aepro_management").doc(cfg.document||"main_database");
+   ONLINE_ENABLED=true;
+  }
+ }catch(e){ONLINE_ENABLED=false; ONLINE_DOC_REF=null;}
+}
+function loadDBAsync(done){
+ if(DB){if(done){done(true);} return;}
+ if(ONLINE_ENABLED && ONLINE_DOC_REF){
+  ONLINE_DOC_REF.get().then(function(snap){
+   if(snap.exists && snap.data() && snap.data().db){DB=snap.data().db; ensureArrays(); loadSettings(); ONLINE_LOADED=true;}
+   else{loadDB(); ONLINE_LOADED=true; saveOnlineDB();}
+   if(done){done(true);}
+  }).catch(function(e){loadDB(); if(done){done(false);}});
+ }else{loadDB(); if(done){done(true);}}
+}
+function saveOnlineDB(){
+ try{
+  if(ONLINE_ENABLED && ONLINE_DOC_REF && DB){
+   ONLINE_DOC_REF.set({db:DB,updatedAt:nowText(),app:"AEPro System V3"},{merge:true}).catch(function(e){try{console.log(e);}catch(x){}});
+  }
+ }catch(e){}
+}
+function downloadTextFile(filename,text){
+ try{var blob=new Blob([text],{type:"text/plain;charset=utf-8"}); var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=filename; document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(a.href); document.body.removeChild(a);},0);}catch(e){toast("Download not supported.");}
+}
+function phoneKey(phone){return String(phone||"").replace(/\D/g,"");}
+function normalizeCustomersByPhone(){
+ if(!DB || !DB.CUSTOMERS){return;}
+ var map={}, remove=[];
+ for(var i=0;i<DB.CUSTOMERS.length;i++){
+  var c=DB.CUSTOMERS[i], key=phoneKey(c.Phone); if(!key){continue;}
+  if(map[key]){
+   var keep=map[key];
+   if(!keep.CustomerName && c.CustomerName){keep.CustomerName=c.CustomerName;}
+   if(!keep.Email && c.Email){keep.Email=c.Email;}
+   if(!keep.Address && c.Address){keep.Address=c.Address;}
+   if(c.Notes && String(keep.Notes||"").indexOf(c.Notes)<0){keep.Notes=trim((keep.Notes||"")+" "+c.Notes);}
+   replaceCustomerID(c.CustomerID,keep.CustomerID); remove.push(i);
+  }else{map[key]=c;}
+ }
+ for(i=remove.length-1;i>=0;i--){DB.CUSTOMERS.splice(remove[i],1);}
+}
+function replaceCustomerID(oldId,newId){
+ var arrs=["JOBS","WARRANTY"];
+ for(var a=0;a<arrs.length;a++){var arr=DB[arrs[a]]||[]; for(var i=0;i<arr.length;i++){if(arr[i].CustomerID==oldId){arr[i].CustomerID=newId;}}}
+}
+function applyReportFilter(){RPT_FROM=val("rptFrom"); RPT_TO=val("rptTo"); RPT_STATUS=val("rptStatus"); RPT_PAYMENT=val("rptPayment"); RPT_TECH=val("rptTech"); RPT_PHONE=val("rptPhone"); renderPage("reports");}
+function clearReportFilter(){RPT_FROM=""; RPT_TO=""; RPT_STATUS=""; RPT_PAYMENT=""; RPT_TECH=""; RPT_PHONE=""; renderPage("reports");}
+
+function findBy(arr,field,id){arr=DB[arr]||[]; for(var i=0;i<arr.length;i++){if(String(arr[i][field])==String(id)){return arr[i];}} return null;}
+function findIndexBy(arr,field,id){arr=DB[arr]||[]; for(var i=0;i<arr.length;i++){if(String(arr[i][field])==String(id)){return i;}} return -1;}
+function logAction(action,detail){DB.SYSTEM_AUDIT.push({"Time":nowText(),"User":CURRENT_USER,"Action":action,"Detail":detail});}
+function toast(msg){var t=document.getElementById("toast"); t.innerHTML=esc(msg); t.style.display="block"; setTimeout(function(){t.style.display="none";},2600);}
+function setLoginMsg(msg){document.getElementById("loginMsg").innerHTML=msg;}
+function passwordHash(p){
+ var str="AEProSystemV3|"+String(p==null?"":p), h=2166136261;
+ for(var i=0;i<str.length;i++){h^=str.charCodeAt(i); h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24); h=h>>>0;}
+ return "AEP3$"+("00000000"+h.toString(16)).slice(-8);
+}
+function migrateUsers(){
+ if(!DB||!DB.USERS){return;}
+ for(var i=0;i<DB.USERS.length;i++){var u=DB.USERS[i]; if(!u.PasswordHash && u.Password){u.PasswordHash=passwordHash(u.Password); u.Password="";}}
+}
+function verifyPassword(user,p){
+ if(!user){return false;}
+ if(user.PasswordHash){return user.PasswordHash==passwordHash(p);}
+ if(user.Password!=null && String(user.Password)==String(p)){user.PasswordHash=passwordHash(p); user.Password=""; return true;}
+ return false;
+}
+
+function login(){
+ var now=(new Date()).getTime();
+ if(LOGIN_LOCK_UNTIL && now<LOGIN_LOCK_UNTIL){setLoginMsg("<span style='color:#fca5a5'>Login locked. Cuba semula sebentar lagi.</span>"); return;}
+ var u=trim(document.getElementById("loginUser").value), p=String(document.getElementById("loginPass").value||"");
+ if(!u||!p){setLoginMsg("<span style='color:#fca5a5'>Masukkan username dan password.</span>"); return;}
+ setLoginMsg("Checking login...");
+ loadDBAsync(function(){
+  migrateUsers();
+  var ok=false, display=u;
+  for(var i=0;i<DB.USERS.length;i++){var x=DB.USERS[i]; if(x.Username==u && verifyPassword(x,p) && String(x.Status||"Active")!="Inactive"){ok=true; display=x.DisplayName||x.Username;}}
+  if(!ok){LOGIN_FAILS++; if(LOGIN_FAILS>=5){LOGIN_LOCK_UNTIL=(new Date()).getTime()+60000; LOGIN_FAILS=0; setLoginMsg("<span style='color:#fca5a5'>Too many attempts. Login locked 60 seconds.</span>");}else{setLoginMsg("<span style='color:#fca5a5'>Wrong username/password.</span>");} return;}
+  LOGIN_FAILS=0; LOGIN_LOCK_UNTIL=0; CURRENT_USER=display; document.getElementById("loginPage").style.display="none"; document.getElementById("appShell").style.display="block"; buildMenu(); refreshBrand(); renderPage("dashboard"); logAction("LOGIN",display); saveDB();
+ });
+}
+
+function logout(){if(confirm("Logout system?")){CURRENT_USER=""; document.getElementById("appShell").style.display="none"; document.getElementById("loginPage").style.display="block"; document.getElementById("loginPass").value="";}}
+function toggleTheme(){loadDBAsync(function(){CURRENT_THEME=(document.body.className=="dark")?"light":"dark"; document.body.className=CURRENT_THEME; setSetting("Theme",CURRENT_THEME); saveDB();});}
+function buildMenu(){var h=""; for(var i=0;i<MENUS.length;i++){h+="<button id='m_"+MENUS[i][0]+"' onclick=\"renderPage('"+MENUS[i][0]+"')\"><span class='ico'>"+MENUS[i][1]+"</span>"+MENUS[i][2]+"</button>";} document.getElementById("menu").innerHTML=h;}
+function activeMenu(){for(var i=0;i<MENUS.length;i++){var b=document.getElementById("m_"+MENUS[i][0]); if(b){b.className=(MENUS[i][0]==CURRENT_PAGE)?"active":"";}}}
+function refreshBrand(){var name=SETTINGS.BusinessName||"KEDAI REPAIR PHONE"; if(String(name).toUpperCase()=="KEDAI REPAIR PHONE"){document.getElementById("brandName").innerHTML="<span class='brandYellow'>KEDAI REPAIR</span> <span class='brandRed'>PHONE</span>";}else{document.getElementById("brandName").innerHTML=esc(name);} document.getElementById("brandSub").innerHTML=esc(SETTINGS.Tagline||"Premium Phone Repair Management");}
+function titleFor(page){for(var i=0;i<MENUS.length;i++){if(MENUS[i][0]==page){return MENUS[i][2];}} return page;}
+function renderPage(page){
+ if(!DB){loadDBAsync(function(){renderPage(page);}); return;}
+ if(!ONLINE_ENABLED){loadDB();}
+ if(page && page!=CURRENT_PAGE){PAGE_Q="";}
+ CURRENT_PAGE=page||CURRENT_PAGE;
+ activeMenu();
+ document.getElementById("pageTitle").innerHTML=esc(titleFor(CURRENT_PAGE));
+ document.getElementById("pageMeta").innerHTML="User: "+esc(CURRENT_USER)+" • "+nowText()+" • "+(ONLINE_ENABLED?"Firebase Online":"Local");
+ var fn=window["page_"+CURRENT_PAGE];
+ if(fn){document.getElementById("content").innerHTML=fn();} else {document.getElementById("content").innerHTML="<div class='card'>Page not found.</div>";}
+}
+function globalSearchChanged(){GLOBAL_Q=trim(document.getElementById("globalSearch").value).toLowerCase(); if(CURRENT_PAGE=="dashboard" && GLOBAL_Q){document.getElementById("content").innerHTML=page_searchall();} else {renderPage(CURRENT_PAGE); document.getElementById("globalSearch").value=GLOBAL_Q;}}
+function pageSearchChanged(){PAGE_Q=trim(document.getElementById("pageSearch").value).toLowerCase(); renderPage(CURRENT_PAGE); try{document.getElementById("pageSearch").value=PAGE_Q;}catch(e){}}
+function matchObj(o,q){if(!q){return true;} for(var k in o){if(String(o[k]).toLowerCase().indexOf(q)>=0){return true;}} return false;}
+function combinedQ(){return trim((GLOBAL_Q||"")+" "+(PAGE_Q||"")).toLowerCase();}
+function pageSearchBox(ph){return "<div class='searchBar pageSearch noPrint'><span class='searchIcon'>⌕</span><input id='pageSearch' class='input' value='"+esc(PAGE_Q)+"' onkeyup='pageSearchChanged()'/></div>";}
+function statusBadge(s){s=String(s||""); var c="bNeutral"; if(s=="Paid"||s=="Completed"||s=="Active"){c="bGood";} else if(s=="Partial"||s=="Waiting Parts"||s=="Diagnosing"||s=="Ready Pickup"){c="bWarn";} else if(s=="Cancelled"||s=="Unpaid"||s=="Low Stock"||s=="Expired"){c="bBad";} else if(s=="Received"||s=="In Repair"){c="bInfo";} return "<span class='badge "+c+"'>"+esc(s)+"</span>";}
+function jobPaid(id){var t=0; for(var i=0;i<DB.PAYMENTS.length;i++){if(DB.PAYMENTS[i].JobID==id){t+=num(DB.PAYMENTS[i].Amount);}} return t;}
+function jobTotal(j){return num(j.SellPrice||j.Price||0);}
+function jobBalance(j){return jobTotal(j)-jobPaid(j.JobID);}
+function jobItem(j){return j.Item||j.ServiceName||'';}
+function jobDesc(j){return j.Description||j.ServiceCategory||j.Complaint||'';}
+function paymentStatus(j){var total=jobTotal(j), paid=jobPaid(j.JobID); if(total<=0 && paid<=0){return "Unpaid";} if(paid>=total){return "Paid";} if(paid>0){return "Partial";} return "Unpaid";}
+function ensureCustomer(name, phone){name=trim(name); phone=trim(phone); if(!name && !phone){return "";} var key=phoneKey(phone); if(key){for(var i=0;i<DB.CUSTOMERS.length;i++){if(phoneKey(DB.CUSTOMERS[i].Phone)==key){if(!DB.CUSTOMERS[i].CustomerName && name){DB.CUSTOMERS[i].CustomerName=name;} if(!DB.CUSTOMERS[i].Phone){DB.CUSTOMERS[i].Phone=phone;} return DB.CUSTOMERS[i].CustomerID;}}} var id=nextID("CustomerPrefix","CUSTOMERS","CustomerID"); DB.CUSTOMERS.push({"CustomerID":id,"CustomerName":name,"Phone":phone,"Email":"","Address":"","TotalJobs":"0","Notes":"","CreatedAt":nowText()}); normalizeCustomersByPhone(); return id;}
+function customerName(id){var c=findBy("CUSTOMERS","CustomerID",id); return c?(c.CustomerName||""):"";}
+function customerPhone(id){var c=findBy("CUSTOMERS","CustomerID",id); return c?(c.Phone||""):"";}
+function deviceName(j){var b=trim((j&&j.Brand)||""), m=trim((j&&j.Model)||""); return trim((b?b+" ":"")+m);}
+function table(headers, rows){var h="<div class='tableWrap'><table><thead><tr>"; for(var i=0;i<headers.length;i++){h+="<th>"+headers[i]+"</th>";} h+="</tr></thead><tbody>"; if(rows.length==0){h+="<tr><td colspan='"+headers.length+"' class='empty'>No data found.</td></tr>";} for(var r=0;r<rows.length;r++){h+="<tr>"+rows[r]+"</tr>";} return h+"</tbody></table></div>";}
+function actionBtn(label,cls,fn,id){return "<button class='btn "+cls+" btnSmall' onclick=\""+fn+"('"+jsq(id)+"')\">"+label+"</button>";}
+function detailRows(rows){var h="<table style='width:100%;'><tbody>"; for(var i=0;i<rows.length;i++){h+="<tr><th style='width:180px;'>"+esc(rows[i][0])+"</th><td>"+rows[i][1]+"</td></tr>";} return h+"</tbody></table>";}
+function viewJob(id){var j=findBy("JOBS","JobID",id); if(!j){return;} var h="<div class='modalTitle'>View Job "+esc(id)+"</div>"; h+=detailRows([["Date",esc(j.DateIn||"")],["Customer",esc(customerName(j.CustomerID))+"<br/><span class='softText'>"+esc(customerPhone(j.CustomerID))+"</span>"],["Device",esc(deviceName(j))],["Item",esc(jobItem(j))],["Description",esc(jobDesc(j))],["Problem",esc(j.Complaint||"")],["Status",statusBadge(j.Status)],["Payment",statusBadge(paymentStatus(j))],["Total",money(jobTotal(j))],["Paid",money(jobPaid(id))],["Balance",balanceLabel(j)],["Warranty",esc(j.WarrantyDays||SETTINGS.DefaultWarrantyDays||"0")+" days"],["Notes",esc(j.Notes||"")]]); h+="<div class='noPrint' style='margin-top:14px;'>"+jobButtons(id)+"</div>"; modal(h);}
+function viewCustomer(id){var c=findBy("CUSTOMERS","CustomerID",id); if(!c){return;} var h="<div class='modalTitle'>View Customer</div>"+detailRows([["ID",esc(c.CustomerID)],["Name",esc(c.CustomerName)],["Phone",esc(c.Phone)],["Email",esc(c.Email||"")],["Address",esc(c.Address||"")],["Jobs",String(countJobs(id))],["Notes",esc(c.Notes||"")]])+"<div class='noPrint' style='margin-top:14px;'>"+actionBtn("Edit","btnBlue","editCustomer",id)+actionBtn("Delete","btnRed","deleteCustomer",id)+"</div>"; modal(h);}
+function viewPart(id){var p=findBy("INVENTORY","PartID",id); if(!p){return;} var h="<div class='modalTitle'>View Inventory</div>"+detailRows([["Part ID",esc(p.PartID)],["Category",esc(p.Category)],["Part",esc(p.PartName)],["Brand",esc(p.Brand)],["Model",esc(p.Model)],["Stock",esc(p.StockQty)],["Min Stock",esc(p.MinStock)],["Cost",money(p.Cost)],["Sell",money(p.SellPrice)],["Notes",esc(p.Notes||"")]])+"<div class='noPrint' style='margin-top:14px;'>"+actionBtn("Stock","btnGreen","adjustStock",id)+actionBtn("Edit","btnBlue","editPart",id)+actionBtn("Delete","btnRed","deletePart",id)+"</div>"; modal(h);}
+function viewPayment(id){var p=findBy("PAYMENTS","PaymentID",id); if(!p){return;} var h="<div class='modalTitle'>View Payment</div>"+detailRows([["Payment ID",esc(p.PaymentID)],["Date",esc(p.Date)],["Job ID",esc(p.JobID)],["Amount",money(p.Amount)],["Method",esc(p.Method)],["Reference",esc(p.Reference||"")],["Notes",esc(p.Notes||"")]])+"<div class='noPrint' style='margin-top:14px;'>"+actionBtn("Delete","btnRed","deletePayment",id)+"</div>"; modal(h);}
+function viewWarranty(id){var w=findBy("WARRANTY","WarrantyID",id); if(!w){return;} var st=parseDate(w.EndDate)<new Date()?"Expired":(w.Status||"Active"); var h="<div class='modalTitle'>View Warranty</div>"+detailRows([["Warranty ID",esc(w.WarrantyID)],["Job ID",esc(w.JobID)],["Customer",esc(customerName(w.CustomerID))],["Start",esc(w.StartDate)],["End",esc(w.EndDate)],["Status",statusBadge(st)],["Notes",esc(w.Notes||"")]])+"<div class='noPrint' style='margin-top:14px;'>"+actionBtn("Delete","btnRed","deleteWarranty",id)+"</div>"; modal(h);}
+function viewPrice(id){var p=findBy("PRICEBOOK","ServiceID",id); if(!p){return;} var h="<div class='modalTitle'>View PriceBook</div>"+detailRows([["ID",esc(p.ServiceID)],["Category",esc(p.Category)],["Service",esc(p.ServiceName)],["Device",esc(p.DeviceType)],["Price",money(p.EstPrice)],["Cost",money(p.CostEstimate)],["Warranty",esc(p.WarrantyDays)+" days"],["Duration",esc(p.Duration||"")],["Notes",esc(p.Notes||"")]])+"<div class='noPrint' style='margin-top:14px;'>"+actionBtn("Delete","btnRed","deletePrice",id)+"</div>"; modal(h);}
+function viewExpense(id){var e=findBy("EXPENSES","ExpenseID",id); if(!e){return;} var h="<div class='modalTitle'>View Expense</div>"+detailRows([["ID",esc(e.ExpenseID)],["Date",esc(e.Date)],["Category",esc(e.Category)],["Description",esc(e.Description)],["Amount",money(e.Amount)]])+"<div class='noPrint' style='margin-top:14px;'>"+actionBtn("Delete","btnRed","deleteExpense",id)+"</div>"; modal(h);}
+
+function val(id){var e=document.getElementById(id); return e?trim(e.value):"";}
+function setVal(id,v){var e=document.getElementById(id); if(e){e.value=v;}}
+function modal(html){document.getElementById("modalContent").innerHTML=html; document.getElementById("modal").style.display="block";}
+function closeModal(){document.getElementById("modal").style.display="none";}
+
+function page_dashboard(){
+ var jobs=DB.JOBS, open=0, completed=0, unpaid=0, sales=0, paid=0, cost=0, low=0, today=0;
+ for(var i=0;i<jobs.length;i++){var j=jobs[i]; if(j.DateIn==todayISO()){today++;} if(j.Status!="Completed" && j.Status!="Cancelled"){open++;} if(j.Status=="Completed"){completed++;} if(paymentStatus(j)!="Paid"){unpaid++;} sales+=jobTotal(j); paid+=jobPaid(j.JobID); cost+=num(j.Cost);}
+ for(i=0;i<DB.INVENTORY.length;i++){if(num(DB.INVENTORY[i].StockQty)<=num(DB.INVENTORY[i].MinStock)){low++;}}
+ var h="<div class='grid'><div class='col'><div class='kpi gradBlue'><div class='label'>Open Jobs</div><div class='value'>"+open+"</div><div class='small'>Job aktif belum selesai</div></div></div><div class='col'><div class='kpi gradGreen'><div class='label'>Collected</div><div class='value'>"+money(paid)+"</div><div class='small'>Payment diterima</div></div></div><div class='col'><div class='kpi gradPurple'><div class='label'>Profit Estimate</div><div class='value'>"+money(paid-cost)+"</div><div class='small'>Collected - modal</div></div></div><div class='col'><div class='kpi gradOrange'><div class='label'>Today Jobs</div><div class='value'>"+today+"</div><div class='small'>Masuk hari ini</div></div></div></div>";
+ h+="<div class='grid' style='margin-top:16px;'><div class='col' style='width:62%;'><div class='card'><div class='cardHeader'><div class='left'><h3>Recent Repair Jobs</h3></div><div class='right'><span class='helpPill'>"+esc(SETTINGS.SyncMode||"Firebase Online Database")+"</span></div></div>"+recentJobs(8)+"</div></div><div class='col'><div class='card'><h3>Quick Actions</h3><button class='btn btnBlue' onclick=\"renderPage('newjob')\">+ New Repair Job</button><button class='btn btnGreen' onclick=\"renderPage('invoice')\">A4 Invoice / Receipt</button><button class='btn btnPurple' onclick=\"renderPage('inventory')\">Manage Stock</button><button class='btn btnOrange' onclick=\"renderPage('reports')\">Reports</button><hr class='sep'/><div class='nextIdBox'>Next Job ID<br/>"+esc(nextDateID("JobPrefix","JOBS","JobID",todayISO()))+"</div></div></div></div>";
+ return h;
+}
+function recentJobs(limit){var q=combinedQ(), rows=[], a=DB.JOBS.slice(Math.max(0,DB.JOBS.length-limit)).reverse(); for(var i=0;i<a.length;i++){var j=a[i]; if(!matchObj(j,q)){continue;} rows.push("<td>"+esc(j.JobID)+"</td><td>"+esc(customerName(j.CustomerID))+"</td><td>"+esc(deviceName(j))+"</td><td>"+esc(jobItem(j))+"</td><td>"+statusBadge(j.Status)+"</td><td>"+statusBadge(paymentStatus(j))+"</td><td>"+balanceLabel(j)+"</td>");} return table(["Job ID","Customer","Device","Item","Status","Payment","Balance"],rows);}
+
+function page_newjob(){
+ var nextJob=nextDateID("JobPrefix","JOBS","JobID",todayISO());
+ var h="<div class='card'><div class='cardHeader'><div class='left'><h2>New Repair Job</h2></div><div class='right'><div class='nextIdBox'>Next Job ID<br/>"+esc(nextJob)+"</div></div></div><div class='formGrid'>";
+ h+=row3("Customer Name","<input id='njCustomerName' class='input'/>","Phone","<input id='njPhone' class='input'/>","Priority","<select id='njPriority' class='select'>"+opt("Priority","Normal")+"</select>");
+ h+=row3("Model","<input id='njModel' class='input'/>","IMEI / Serial","<input id='njImei' class='input'/>","Status","<select id='njStatus' class='select'>"+opt("JobStatus","Received")+"</select>");
+ h+=row3("Item","<input id='njItem' class='input'/>","Description","<input id='njDescription' class='input'/>","Technician","<input id='njTech' class='input'/>");
+ h+=row3("Problem","<input id='njComplaint' class='input'/>","Lock/Password","<input id='njLock' class='input'/>","Due Date","<input id='njDue' class='input' value='"+todayISO()+"'/>");
+ h+=row3("Sell Price","<input id='njSell' class='input'/>","Modal / Cost","<input id='njCost' class='input'/>","Deposit / Paid Now","<input id='njDeposit' class='input'/>");
+ h+=row3("Deposit Method","<select id='njDepMethod' class='select'>"+opt("PaymentMethod","Cash")+"</select>","Warranty Days","<input id='njWarranty' class='input' value='"+esc(SETTINGS.DefaultWarrantyDays||"30")+"'/>","Notes","<input id='njNotes' class='input'/>");
+ h+="</div><div style='height:12px'></div><button class='btn btnBlue' onclick='saveNewJob()'>Save Repair Job</button><button class='btn btnGhost' onclick='clearNewJob()'>Clear Form</button></div>";
+ return h;
+}
+function row3(a,b,c,d,e,f){return "<div class='formRow'><div class='formCell'><label class='lbl'>"+a+"</label>"+b+"</div><div class='formCell'><label class='lbl'>"+c+"</label>"+d+"</div><div class='formCell'><label class='lbl'>"+e+"</label>"+f+"</div></div>";}
+function saveNewJob(){
+ loadDB();
+ if(!val("njCustomerName") && !val("njPhone")){toast("Isi nama atau phone customer."); return;}
+ if(!val("njItem")){toast("Isi item."); return;}
+ var cid=ensureCustomer(val("njCustomerName"), val("njPhone"));
+ var jid=nextDateID("JobPrefix","JOBS","JobID",todayISO());
+ var j={"JobID":jid,"InvoiceNo":"","ReceiptNo":"","DateIn":todayISO(),"DueDate":val("njDue")||todayISO(),"CustomerID":cid,"Brand":"","Model":val("njModel"),"IMEI":val("njImei"),"Description":val("njDescription"),"Item":val("njItem"),"ServiceCategory":val("njDescription"),"ServiceName":val("njItem"),"Complaint":val("njComplaint"),"LockPassword":val("njLock"),"Technician":val("njTech"),"Priority":val("njPriority"),"Status":val("njStatus")||"Received","SellPrice":val("njSell"),"Cost":val("njCost"),"Deposit":val("njDeposit"),"WarrantyDays":val("njWarranty"),"Notes":val("njNotes"),"CreatedAt":nowText(),"UpdatedAt":nowText()};
+ DB.JOBS.push(j);
+ var dep=num(val("njDeposit")); if(dep>0){DB.PAYMENTS.push({"PaymentID":nextDateID("PaymentPrefix","PAYMENTS","PaymentID",todayISO()),"JobID":jid,"Date":todayISO(),"Amount":String(dep),"Method":val("njDepMethod")||"Cash","Reference":"Deposit","Notes":"Deposit","CreatedAt":nowText()});}
+ logAction("CREATE_JOB",jid); saveDB(); toast("Job saved: "+jid); clearNewJob(); renderPage("jobs");
+}
+function clearNewJob(){var ids=["njCustomerName","njPhone","njModel","njImei","njDescription","njItem","njComplaint","njLock","njTech","njSell","njCost","njDeposit","njNotes"]; for(var i=0;i<ids.length;i++){setVal(ids[i],"");} setVal("njDue",todayISO());}
+
+function page_jobs(){
+ var q=combinedQ(), rows=[]; for(var i=DB.JOBS.length-1;i>=0;i--){var j=DB.JOBS[i]; var ext={"Customer":customerName(j.CustomerID),"Phone":customerPhone(j.CustomerID),"Payment":paymentStatus(j)}; var m=false; if(matchObj(j,q)||matchObj(ext,q)){m=true;} if(!m){continue;}
+ rows.push("<td>"+esc(j.JobID)+"</td><td>"+esc(j.DateIn)+"</td><td>"+esc(customerName(j.CustomerID))+"<br/><span class='softText'>"+esc(customerPhone(j.CustomerID))+"</span></td><td>"+esc(deviceName(j))+"</td><td>"+esc(jobItem(j))+"<br/><span class='softText'>"+esc(jobDesc(j))+"</span></td><td>"+statusBadge(j.Status)+"</td><td>"+statusBadge(paymentStatus(j))+"</td><td>"+money(jobTotal(j))+"</td><td>"+balanceLabel(j)+"</td><td class='inlineActions'>"+actionBtn("View","btnBlue","viewJob",j.JobID)+"</td>");
+ }
+ return "<div class='card'><h2>Repair Jobs</h2>"+pageSearchBox("Search")+table(["Job ID","Date","Customer","Device","Item","Status","Payment","Total","Balance","Action"],rows)+"</div>";
+}
+
+function jobButtons(id){return actionBtn("Edit","btnBlue","editJob",id)+actionBtn("Paid","btnGreen","markPaid",id)+actionBtn("Complete","btnPurple","completeJob",id)+actionBtn("Invoice","btnOrange","showInvoice",id)+actionBtn("WA","btnGhost","whatsappJob",id)+actionBtn("Delete","btnRed","deleteJob",id);}
+
+function editJob(id){var j=findBy("JOBS","JobID",id); if(!j){return;} var h="<div class='modalTitle'>Edit Job "+esc(id)+"</div><div class='formGrid'>";
+ h+=row3("Status","<select id='ejStatus' class='select'>"+opt("JobStatus",j.Status)+"</select>","Priority","<select id='ejPriority' class='select'>"+opt("Priority",j.Priority)+"</select>","Due Date","<input id='ejDue' class='input' value='"+esc(j.DueDate)+"'/>");
+ h+=row3("Brand","<select id='ejBrand' class='select'>"+opt("Brand",j.Brand)+"</select>","Model","<input id='ejModel' class='input' value='"+esc(j.Model)+"'/>","IMEI / Serial","<input id='ejImei' class='input' value='"+esc(j.IMEI)+"'/>");
+ h+=row3("Description","<input id='ejDescription' class='input' value='"+esc(jobDesc(j))+"'/>","Item","<input id='ejItem' class='input' value='"+esc(jobItem(j))+"'/>","Technician","<input id='ejTech' class='input' value='"+esc(j.Technician)+"'/>");
+ h+=row3("Problem","<input id='ejComplaint' class='input' value='"+esc(j.Complaint)+"'/>","Sell Price","<input id='ejSell' class='input' value='"+esc(j.SellPrice)+"'/>","Cost","<input id='ejCost' class='input' value='"+esc(j.Cost)+"'/>");
+ h+=row3("Warranty Days","<input id='ejWarranty' class='input' value='"+esc(j.WarrantyDays)+"'/>","Lock/Password","<input id='ejLock' class='input' value='"+esc(j.LockPassword)+"'/>","Notes","<input id='ejNotes' class='input' value='"+esc(j.Notes)+"'/>");
+ h+="</div><button class='btn btnBlue' onclick=\"saveEditJob('"+jsq(id)+"')\">Save Update</button><button class='btn btnRed' onclick=\"deleteJob('"+jsq(id)+"')\">Delete Job</button>"; modal(h);}
+function saveEditJob(id){var j=findBy("JOBS","JobID",id); if(!j){return;} j.Status=val("ejStatus"); j.Priority=val("ejPriority"); j.DueDate=val("ejDue"); j.Brand=val("ejBrand"); j.Model=val("ejModel"); j.IMEI=val("ejImei"); j.Description=val("ejDescription"); j.Item=val("ejItem"); j.ServiceCategory=val("ejDescription"); j.ServiceName=val("ejItem"); j.Technician=val("ejTech"); j.Complaint=val("ejComplaint"); j.SellPrice=val("ejSell"); j.Cost=val("ejCost"); j.WarrantyDays=val("ejWarranty"); j.LockPassword=val("ejLock"); j.Notes=val("ejNotes"); j.UpdatedAt=nowText(); logAction("EDIT_JOB",id); saveDB(); closeModal(); renderPage("jobs"); toast("Job updated.");}
+function deleteJob(id){if(!confirm("Delete job "+id+"? Payment dan warranty berkaitan juga akan dipadam.")){return;} var idx=findIndexBy("JOBS","JobID",id); if(idx>=0){DB.JOBS.splice(idx,1);} deleteWhere("PAYMENTS","JobID",id); deleteWhere("PART_USAGE","JobID",id); deleteWhere("WARRANTY","JobID",id); logAction("DELETE_JOB",id); saveDB(); closeModal(); renderPage(CURRENT_PAGE); toast("Job deleted.");}
+function deleteWhere(arr,field,valx){for(var i=DB[arr].length-1;i>=0;i--){if(DB[arr][i][field]==valx){DB[arr].splice(i,1);}}}
+function markPaid(id){var j=findBy("JOBS","JobID",id); if(!j){return;} var bal=jobBalance(j); if(bal<=0){toast("Job already paid."); return;} var method=prompt("Payment method:", "Cash"); if(method===null){return;} DB.PAYMENTS.push({"PaymentID":nextDateID("PaymentPrefix","PAYMENTS","PaymentID",todayISO()),"JobID":id,"Date":todayISO(),"Amount":String(bal),"Method":method||"Cash","Reference":"Mark Paid","Notes":"Auto balance payment","CreatedAt":nowText()}); logAction("MARK_PAID",id); saveDB(); renderPage(CURRENT_PAGE); toast("Marked paid: "+id);}
+function completeJob(id){var j=findBy("JOBS","JobID",id); if(!j){return;} j.Status="Completed"; j.CompletedDate=todayISO(); j.UpdatedAt=nowText(); if(findIndexBy("WARRANTY","JobID",id)<0 && num(j.WarrantyDays)>0){DB.WARRANTY.push({"WarrantyID":nextDateID("WarrantyPrefix","WARRANTY","WarrantyID",todayISO()),"JobID":id,"CustomerID":j.CustomerID,"StartDate":todayISO(),"EndDate":addDays(todayISO(),j.WarrantyDays),"WarrantyDays":j.WarrantyDays,"Status":"Active","Notes":jobItem(j)});} logAction("COMPLETE_JOB",id); saveDB(); renderPage(CURRENT_PAGE); toast("Job completed.");}
+
+function page_customers(){
+ var q=combinedQ(), rows=[]; for(var i=DB.CUSTOMERS.length-1;i>=0;i--){var c=DB.CUSTOMERS[i]; if(!matchObj(c,q)){continue;} rows.push("<td>"+esc(c.CustomerID)+"</td><td>"+esc(c.CustomerName)+"</td><td>"+esc(c.Phone)+"</td><td>"+esc(c.Email||"")+"</td><td>"+countJobs(c.CustomerID)+"</td><td>"+esc(c.Notes||"")+"</td><td>"+actionBtn("View","btnBlue","viewCustomer",c.CustomerID)+"</td>");}
+ var form="<div class='card'><h2>Customers</h2><div class='formGrid'>"+row3("Name","<input id='cName' class='input'/>","Phone","<input id='cPhone' class='input'/>","Email","<input id='cEmail' class='input'/>")+row3("Address","<input id='cAddress' class='input'/>","Notes","<input id='cNotes' class='input'/>","Action","<button class='btn btnBlue' onclick='addCustomer()'>Add Customer</button><button class='btn btnGhost' onclick='combineCustomers()'>Combine Phone</button>")+"</div></div>";
+ return form+"<div class='card'>"+pageSearchBox("Search customers...")+table(["ID","Name","Phone","Email","Jobs","Notes","Action"],rows)+"</div>";
+}
+
+function countJobs(cid){var n=0; for(var i=0;i<DB.JOBS.length;i++){if(DB.JOBS[i].CustomerID==cid){n++;}} return n;}
+function addCustomer(){if(!val("cName") && !val("cPhone")){toast("Isi nama atau phone."); return;} var id=ensureCustomer(val("cName"),val("cPhone")); var c=findBy("CUSTOMERS","CustomerID",id); c.Email=val("cEmail")||c.Email; c.Address=val("cAddress")||c.Address; c.Notes=val("cNotes")||c.Notes; saveDB(); renderPage("customers"); toast("Customer saved.");}
+function combineCustomers(){normalizeCustomersByPhone(); saveDB(); renderPage("customers"); toast("Customers combined by phone number.");}
+function editCustomer(id){var c=findBy("CUSTOMERS","CustomerID",id); if(!c){return;} modal("<div class='modalTitle'>Edit Customer</div><label class='lbl'>Name</label><input id='ecName' class='input' value='"+esc(c.CustomerName)+"'/><label class='lbl'>Phone</label><input id='ecPhone' class='input' value='"+esc(c.Phone)+"'/><label class='lbl'>Email</label><input id='ecEmail' class='input' value='"+esc(c.Email)+"'/><label class='lbl'>Address</label><input id='ecAddress' class='input' value='"+esc(c.Address)+"'/><label class='lbl'>Notes</label><input id='ecNotes' class='input' value='"+esc(c.Notes)+"'/><button class='btn btnBlue' onclick=\"saveCustomer('"+jsq(id)+"')\">Save</button>");}
+function saveCustomer(id){var c=findBy("CUSTOMERS","CustomerID",id); if(!c){return;} c.CustomerName=val("ecName"); c.Phone=val("ecPhone"); c.Email=val("ecEmail"); c.Address=val("ecAddress"); c.Notes=val("ecNotes"); saveDB(); closeModal(); renderPage("customers");}
+function deleteCustomer(id){if(countJobs(id)>0){if(!confirm("Customer ini ada job. Delete customer sahaja? Job akan kekal tetapi nama mungkin kosong.")){return;}} var idx=findIndexBy("CUSTOMERS","CustomerID",id); if(idx>=0){DB.CUSTOMERS.splice(idx,1);} saveDB(); renderPage("customers"); toast("Customer deleted.");}
+
+function page_inventory(){
+ var q=combinedQ(), rows=[]; for(var i=DB.INVENTORY.length-1;i>=0;i--){var p=DB.INVENTORY[i]; if(!matchObj(p,q)){continue;} var stock=num(p.StockQty), min=num(p.MinStock), st=stock<=min?"Low Stock":"OK"; rows.push("<td>"+esc(p.PartID)+"</td><td>"+esc(p.Category)+"</td><td>"+esc(p.PartName)+"</td><td>"+esc(p.Brand)+"</td><td>"+esc(p.Model)+"</td><td>"+stock+"</td><td>"+statusBadge(st)+"</td><td>"+money(p.Cost)+"</td><td>"+money(p.SellPrice)+"</td><td>"+actionBtn("View","btnBlue","viewPart",p.PartID)+"</td>");}
+ var form="<div class='card'><h2>Inventory / Parts Stock</h2><div class='formGrid'>"+row3("Category","<input id='pCategory' class='input'/>","Part Name","<input id='pName' class='input'/>","Brand","<select id='pBrand' class='select'>"+opt("Brand","")+"</select>")+row3("Model","<input id='pModel' class='input'/>","Stock Qty","<input id='pQty' class='input'/>","Min Stock","<input id='pMin' class='input' value='2'/>")+row3("Cost","<input id='pCost' class='input'/>","Sell Price","<input id='pSell' class='input'/>","Action","<button class='btn btnBlue' onclick='addPart()'>Add Part</button>")+"</div></div>";
+ return form+"<div class='card'>"+pageSearchBox("Search inventory...")+table(["Part ID","Category","Part","Brand","Model","Stock","Status","Cost","Sell","Action"],rows)+"</div>";
+}
+
+function addPart(){if(!val("pName")){toast("Isi part name."); return;} DB.INVENTORY.push({"PartID":nextID("PartPrefix","INVENTORY","PartID"),"Category":val("pCategory"),"PartName":val("pName"),"Brand":val("pBrand"),"Model":val("pModel"),"StockQty":val("pQty"),"MinStock":val("pMin"),"Cost":val("pCost"),"SellPrice":val("pSell"),"Supplier":"","Notes":"","CreatedAt":nowText()}); saveDB(); renderPage("inventory"); toast("Part added.");}
+function editPart(id){var p=findBy("INVENTORY","PartID",id); if(!p){return;} modal("<div class='modalTitle'>Edit Part</div>"+rowModal("Part Name","epName",p.PartName)+rowModal("Category","epCat",p.Category)+rowModal("Brand","epBrand",p.Brand)+rowModal("Model","epModel",p.Model)+rowModal("Stock","epQty",p.StockQty)+rowModal("Min Stock","epMin",p.MinStock)+rowModal("Cost","epCost",p.Cost)+rowModal("Sell","epSell",p.SellPrice)+"<button class='btn btnBlue' onclick=\"savePart('"+jsq(id)+"')\">Save</button>");}
+function rowModal(label,id,valx){return "<label class='lbl'>"+label+"</label><input id='"+id+"' class='input' value='"+esc(valx)+"'/>";}
+function savePart(id){var p=findBy("INVENTORY","PartID",id); if(!p){return;} p.PartName=val("epName"); p.Category=val("epCat"); p.Brand=val("epBrand"); p.Model=val("epModel"); p.StockQty=val("epQty"); p.MinStock=val("epMin"); p.Cost=val("epCost"); p.SellPrice=val("epSell"); saveDB(); closeModal(); renderPage("inventory");}
+function adjustStock(id){var p=findBy("INVENTORY","PartID",id); if(!p){return;} var q=prompt("New stock quantity for "+p.PartName+":",p.StockQty); if(q===null){return;} p.StockQty=String(num(q)); saveDB(); renderPage("inventory");}
+function deletePart(id){if(!confirm("Delete inventory item "+id+"?")){return;} var idx=findIndexBy("INVENTORY","PartID",id); if(idx>=0){DB.INVENTORY.splice(idx,1);} saveDB(); renderPage("inventory"); toast("Part deleted.");}
+
+function page_partusage(){return "";}
+
+function addUsage(){toast("Module removed.");}
+
+function deleteUsage(id){toast("Module removed.");}
+
+function page_payments(){
+ var rows=[], q=combinedQ(); for(var i=DB.PAYMENTS.length-1;i>=0;i--){var p=DB.PAYMENTS[i]; if(!matchObj(p,q)){continue;} rows.push("<td>"+esc(p.PaymentID)+"</td><td>"+esc(p.Date)+"</td><td>"+esc(p.JobID)+"</td><td>"+money(p.Amount)+"</td><td>"+esc(p.Method)+"</td><td>"+esc(p.Reference||"")+"</td><td>"+esc(p.Notes||"")+"</td><td>"+actionBtn("View","btnBlue","viewPayment",p.PaymentID)+"</td>");}
+ var form="<div class='card'><h2>Payments</h2><div class='formGrid'>"+row3("Job ID","<input id='payJob' class='input'/>","Amount","<input id='payAmount' class='input'/>","Method","<select id='payMethod' class='select'>"+opt("PaymentMethod","Cash")+"</select>")+row3("Reference","<input id='payRef' class='input'/>","Notes","<input id='payNotes' class='input'/>","Action","<button class='btn btnBlue' onclick='addPayment()'>Add Payment</button>")+"</div></div>";
+ return form+"<div class='card'>"+pageSearchBox("Search payments...")+table(["Payment ID","Date","Job ID","Amount","Method","Ref","Notes","Action"],rows)+"</div>";
+}
+
+function addPayment(){if(!findBy("JOBS","JobID",val("payJob"))){toast("Job not found."); return;} if(num(val("payAmount"))<=0){toast("Invalid amount."); return;} DB.PAYMENTS.push({"PaymentID":nextDateID("PaymentPrefix","PAYMENTS","PaymentID",todayISO()),"JobID":val("payJob"),"Date":todayISO(),"Amount":val("payAmount"),"Method":val("payMethod"),"Reference":val("payRef"),"Notes":val("payNotes"),"CreatedAt":nowText()}); saveDB(); renderPage("payments");}
+function deletePayment(id){if(!confirm("Delete payment "+id+"?")){return;} var idx=findIndexBy("PAYMENTS","PaymentID",id); if(idx>=0){DB.PAYMENTS.splice(idx,1);} saveDB(); renderPage("payments");}
+
+function page_warranty(){
+ var rows=[], q=combinedQ(); for(var i=DB.WARRANTY.length-1;i>=0;i--){var w=DB.WARRANTY[i]; var st=parseDate(w.EndDate)<new Date()?"Expired":(w.Status||"Active"); if(!matchObj(w,q)){continue;} rows.push("<td>"+esc(w.WarrantyID)+"</td><td>"+esc(w.JobID)+"</td><td>"+esc(customerName(w.CustomerID))+"</td><td>"+esc(w.StartDate)+"</td><td>"+esc(w.EndDate)+"</td><td>"+statusBadge(st)+"</td><td>"+esc(w.Notes||"")+"</td><td>"+actionBtn("View","btnBlue","viewWarranty",w.WarrantyID)+"</td>");}
+ return "<div class='card'><h2>Warranty Tracker</h2>"+pageSearchBox("Search warranty...")+table(["Warranty ID","Job ID","Customer","Start","End","Status","Notes","Action"],rows)+"</div>";
+}
+
+function deleteWarranty(id){if(!confirm("Delete warranty "+id+"?")){return;} var idx=findIndexBy("WARRANTY","WarrantyID",id); if(idx>=0){DB.WARRANTY.splice(idx,1);} saveDB(); renderPage("warranty");}
+
+function page_invoice(){
+ var opts="<option value=''>Select job</option>"; for(var i=DB.JOBS.length-1;i>=0;i--){opts+="<option value='"+esc(DB.JOBS[i].JobID)+"'>"+esc(DB.JOBS[i].JobID+" - "+customerName(DB.JOBS[i].CustomerID)+" - "+jobItem(DB.JOBS[i]))+"</option>";}
+ return "<div class='card noPrint'><div class='cardHeader'><div class='left'><h2>A4 Invoice / Official Receipt</h2><div class='formHint'>Invoice boleh search ikut Job ID atau nombor phone. Receipt paid tidak paparkan balance dan payment detail.</div></div><div class='right'><span class='helpPill'>A4 Print Ready</span></div></div><div class='formGrid'>"+row3("Job ID","<select id='invJob' class='select' onchange='renderInvoicePreview()'>"+opts+"</select>","Manual Job ID","<input id='invManual' class='input'/>","Phone Number","<input id='invPhone' class='input'/>")+row3("Action","<button class='btn btnBlue' onclick='renderInvoicePreview()'>Preview</button><button class='btn btnGreen' onclick='window.print()'>Print A4 / PDF</button>","","","","")+"</div></div><div id='invoicePreview'>"+invoiceEmpty()+"</div>";
+}
+
+function invoiceEmpty(){return "<div class='card'><div class='empty'>Select Job ID untuk preview invoice / receipt A4.</div></div>";}
+function findInvoiceJobID(){
+ var id=val("invManual")||val("invJob"); if(id){return id;}
+ var ph=phoneKey(val("invPhone")); if(!ph){return "";}
+ for(var i=DB.JOBS.length-1;i>=0;i--){var j=DB.JOBS[i]; if(phoneKey(customerPhone(j.CustomerID)).indexOf(ph)>=0){return j.JobID;}}
+ return "";
+}
+
+function renderInvoicePreview(){var id=findInvoiceJobID(); if(!id){document.getElementById("invoicePreview").innerHTML=invoiceEmpty(); toast("Job tidak dijumpai."); return;} document.getElementById("invoicePreview").innerHTML=invoiceHTML(id,true);}
+
+function invoiceHTML(id,withActions){
+ var j=findBy("JOBS","JobID",id); if(!j){return "<div class='card'><div class='empty'>Job not found.</div></div>";}
+ var c=findBy("CUSTOMERS","CustomerID",j.CustomerID)||{}; var paid=jobPaid(id), bal=jobBalance(j), total=jobTotal(j), paidComplete=isPaidComplete(j), docType=docTypeForJob(j), docNo=docNumberForJob(j);
+ var logo=fileUrl(SETTINGS.LogoPath||"assets/ae_pro_fix_logo.png"), qr=fileUrl(SETTINGS.QRPath||"assets/payment_qr.png"), appIcon=fileUrl("assets/aepro_management_icon.png");
+ var ssmLine=SETTINGS.SSMNo?"<br/>"+esc(SETTINGS.SSMNo):"";
+ var h="<div class='invoicePaper'><img class='invoiceBrandSeal' src='"+appIcon+"'/><div class='invoiceHeader'><table style='width:100%;border-collapse:collapse;'><tr><td style='border:0;width:55%;vertical-align:top;'><img class='logoImg' src='"+logo+"'/><div style='font-size:18px;font-weight:900;margin-top:8px;letter-spacing:.03em;'>"+esc(SETTINGS.BusinessName||"KEDAI REPAIR PHONE")+"</div><div class='invoiceMini'>"+esc(SETTINGS.Location||"")+"<br/>"+esc(SETTINGS.Phone||"")+ssmLine+"</div></td><td style='border:0;text-align:right;vertical-align:top;'><div class='invTitle'>"+docType+"</div><div class='docNo'>"+esc(docNo)+"</div><div class='invoiceMini'>Date: "+todayISO()+"<br/>Job ID: "+esc(id)+"</div>"+(paidComplete?"<div class='receiptRibbon'>PAYMENT COMPLETE</div>":"<div class='dueRibbon'>PAYMENT DUE</div>")+"</td></tr></table></div>";
+ h+="<table style='width:100%;border-collapse:separate;border-spacing:12px 0;'><tr><td class='invBox' style='width:50%;vertical-align:top;'><div class='invLabel'>Bill To</div><b>"+esc(c.CustomerName||"Walk-in Customer")+"</b><br/>"+esc(c.Phone||"-")+"<br/>"+esc(c.Email||"")+"</td><td class='invBox' style='vertical-align:top;'><div class='invLabel'>Device / Repair Info</div><b>"+esc(deviceName(j)||"-")+"</b><br/>IMEI/Serial: "+esc(j.IMEI||"-")+"<br/>Status: "+esc(j.Status||"-")+"<br/>Warranty: "+esc(j.WarrantyDays||SETTINGS.DefaultWarrantyDays||"0")+" days</td></tr></table>";
+ h+="<div style='height:16px'></div><table><thead><tr><th style='width:38px;'>No</th><th>Item / Service</th><th>Description</th><th style='width:62px;text-align:center;'>Qty</th><th style='width:130px;text-align:right;'>Amount</th></tr></thead><tbody><tr><td>1</td><td><b>"+esc(jobItem(j)||"Repair Service")+"</b><br/><span style='color:#64748b;'>"+esc(j.Complaint||"")+"</span></td><td>"+esc(jobDesc(j)||"-")+"</td><td style='text-align:center;'>1</td><td style='text-align:right;'>"+money(total)+"</td></tr></tbody></table>";
+ h+="<div style='height:16px'></div><table style='width:100%;'><tr><td style='border:0;width:54%;vertical-align:top;'>";
+ if(paidComplete){h+="<div class='invBox'><div class='invLabel'>Payment Status</div><b>Official Receipt</b><br/>Payment has been received and verified.<div class='invoiceMini' style='margin-top:8px;'>Payment detail hidden for paid receipt.</div></div>";}else{h+="<div class='invBox'><div class='invLabel'>Payment Details</div><table style='width:100%;'><tr><td style='border:0;width:120px;'><img class='qrImg' src='"+qr+"'/></td><td style='border:0;vertical-align:top;'><b>"+esc(SETTINGS.BankName||"Payment QR")+"</b><br/>"+esc(SETTINGS.BankAccount||"")+"<br/>"+esc(SETTINGS.AccountName||"")+"<div class='invoiceMini' style='margin-top:8px;'>Simpan resit bayaran untuk rujukan.</div></td></tr></table></div>";}
+ h+="</td><td style='border:0;vertical-align:top;'><table class='summaryTbl'><tr><td>Total</td><td style='text-align:right;'>"+money(total)+"</td></tr><tr><td>Paid</td><td style='text-align:right;'>"+money(paid)+"</td></tr>";
+ if(!paidComplete){h+="<tr><th>Balance</th><th style='text-align:right;'>"+money(bal)+"</th></tr>";} else {h+="<tr><th>Status</th><th style='text-align:right;'>PAID COMPLETE</th></tr>";}
+ h+="</table><div style='text-align:right;margin-top:18px;'>"+(paidComplete?"<span class='paidStamp'>PAID</span>":"")+"</div></td></tr></table>";
+ h+="<div style='height:14px'></div><table style='width:100%;border-collapse:separate;border-spacing:12px 0;'><tr><td class='invBox' style='width:50%;vertical-align:top;'><div class='invLabel'>Warranty / Terms</div>"+esc(SETTINGS.WarrantyTerms||"Warranty bermula selepas repair siap atau pickup. Warranty tidak cover crack, water damage, short, board tamper, atau kerosakan baru selepas pickup.")+"</td><td class='invBox' style='vertical-align:top;'><div class='invLabel'>Note</div>"+esc(SETTINGS.InvoiceNote||"")+"</td></tr></table>";
+ h+="<div style='margin-top:26px;'><table style='width:100%;'><tr><td style='border:0;text-align:center;color:#64748b;font-size:11px;'>Customer Signature</td><td style='border:0;text-align:center;color:#64748b;font-size:11px;'>Checked By / Technician</td></tr><tr><td style='border:0;padding-top:38px;text-align:center;'>________________________</td><td style='border:0;padding-top:38px;text-align:center;'>________________________</td></tr></table></div>";
+ if(withActions){h+="<div class='noPrint' style='margin-top:16px;'><button class='btn btnGreen' onclick=\"saveInvoiceRecord('"+jsq(id)+"')\">Save Record</button><button class='btn btnBlue' onclick='window.print()'>Print A4 / PDF</button><button class='btn btnOrange' onclick=\"whatsappJob('"+jsq(id)+"')\">WhatsApp</button></div>";}
+ h+="</div>"; return h;
+}
+
+function showInvoice(id){modal("<div class='modalTitle'>A4 Invoice / Receipt Preview</div>"+invoiceHTML(id,true));}
+function saveInvoiceRecord(id){var j=findBy("JOBS","JobID",id); if(!j){return;} var docNo=docNumberForJob(j), type=docTypeForJob(j), status=isPaidComplete(j)?"Paid":"Unpaid / Partial", found=null; for(var i=0;i<DB.INVOICES_DB.length;i++){if(DB.INVOICES_DB[i].DocumentID==docNo || DB.INVOICES_DB[i].InvoiceID==docNo){found=DB.INVOICES_DB[i];}}
+ var rec={"InvoiceID":docNo,"DocumentID":docNo,"DocumentType":type,"JobID":id,"Date":todayISO(),"Customer":customerName(j.CustomerID),"Total":String(jobTotal(j)),"Paid":String(jobPaid(id)),"Balance":String(isPaidComplete(j)?0:jobBalance(j)),"Status":status,"CreatedAt":nowText()};
+ if(found){for(var k in rec){found[k]=rec[k];}} else {DB.INVOICES_DB.push(rec);} logAction("SAVE_DOC",docNo); saveDB(); toast(type+" saved: "+docNo);}
+function whatsappJob(id){var j=findBy("JOBS","JobID",id); if(!j){return;} var phone=customerPhone(j.CustomerID).replace(/\D/g,""); if(!phone){phone=prompt("Customer WhatsApp number:",""); if(!phone){return;}} var paidComplete=isPaidComplete(j); var msg=encodeURIComponent(SETTINGS.BusinessName||"KEDAI REPAIR PHONE")+"%0AJob ID: "+encodeURIComponent(id)+"%0ADevice: "+encodeURIComponent(deviceName(j)||"-")+"%0AService: "+encodeURIComponent(jobItem(j))+"%0AStatus: "+encodeURIComponent(j.Status); if(paidComplete){msg+="%0APayment: PAID COMPLETE";} else {msg+="%0ABalance: "+encodeURIComponent(money(jobBalance(j)));} var wa="https://wa.me/"+phone+"?text="+msg; if(shell){shell.Run(wa);}else{window.open(wa,"_blank");}}
+
+function page_pricebook(){
+ var rows=[], q=combinedQ(); for(var i=DB.PRICEBOOK.length-1;i>=0;i--){var s=DB.PRICEBOOK[i]; if(!matchObj(s,q)){continue;} rows.push("<td>"+esc(s.ServiceID)+"</td><td>"+esc(s.Category)+"</td><td>"+esc(s.ServiceName)+"</td><td>"+esc(s.DeviceType)+"</td><td>"+money(s.EstPrice)+"</td><td>"+money(s.CostEstimate)+"</td><td>"+esc(s.WarrantyDays)+" days</td><td>"+actionBtn("View","btnBlue","viewPrice",s.ServiceID)+"</td>");}
+ var form="<div class='card'><h2>PriceBook Reference</h2><div class='formGrid'>"+row3("Category","<input id='pbCat' class='input'/>","Service Name","<input id='pbName' class='input'/>","Device Type","<input id='pbDevice' class='input'/>")+row3("Est Price","<input id='pbPrice' class='input'/>","Cost Estimate","<input id='pbCost' class='input'/>","Warranty Days","<input id='pbWarranty' class='input' value='30'/>")+row3("Duration","<input id='pbDuration' class='input'/>","Notes","<input id='pbNotes' class='input'/>","Action","<button class='btn btnBlue' onclick='addPrice()'>Add Reference</button>")+"</div></div>";
+ return form+"<div class='card'>"+pageSearchBox("Search pricebook...")+table(["ID","Category","Service","Device","Price","Cost","Warranty","Action"],rows)+"</div>";
+}
+
+function addPrice(){if(!val("pbName")){toast("Isi service name."); return;} DB.PRICEBOOK.push({"ServiceID":"SVC-"+("000"+(DB.PRICEBOOK.length+1)).slice(-3),"Category":val("pbCat"),"ServiceName":val("pbName"),"DeviceType":val("pbDevice"),"EstPrice":val("pbPrice"),"CostEstimate":val("pbCost"),"WarrantyDays":val("pbWarranty"),"Duration":val("pbDuration"),"Notes":val("pbNotes")}); saveDB(); renderPage("pricebook");}
+function deletePrice(id){if(!confirm("Delete pricebook item "+id+"?")){return;} var idx=findIndexBy("PRICEBOOK","ServiceID",id); if(idx>=0){DB.PRICEBOOK.splice(idx,1);} saveDB(); renderPage("pricebook");}
+
+function page_reports(){
+ var jobs=[], q=combinedQ(), exp=0;
+ for(var i=0;i<DB.JOBS.length;i++){var j=DB.JOBS[i]; if(reportJobMatch(j) && (matchObj(j,q)||matchObj({Customer:customerName(j.CustomerID),Phone:customerPhone(j.CustomerID),Payment:paymentStatus(j)},q))){jobs.push(j);}}
+ for(i=0;i<DB.EXPENSES.length;i++){var e=DB.EXPENSES[i]; if(dateInRange(e.Date,RPT_FROM,RPT_TO)){exp+=num(e.Amount);}}
+ var sales=0, paid=0, cost=0, balance=0, completed=0;
+ var months={}, days={}, statusMap={}, itemMap={}, custMap={};
+ for(i=0;i<jobs.length;i++){
+  j=jobs[i]; var total=jobTotal(j), jp=jobPaid(j.JobID), jc=num(j.Cost), jb=Math.max(0,total-jp), pm=paymentStatus(j);
+  sales+=total; paid+=jp; cost+=jc; balance+=jb; if(j.Status=="Completed"){completed++;}
+  addReportBucket(months,monthKey(j.DateIn),j,total,jp,jc,jb);
+  addReportBucket(days,j.DateIn||todayISO(),j,total,jp,jc,jb);
+  addCountBucket(statusMap,j.Status||"-",total,jp,jc,jb);
+  addCountBucket(statusMap,"Payment: "+pm,total,jp,jc,jb);
+  addCountBucket(itemMap,jobItem(j)||"-",total,jp,jc,jb);
+  addCountBucket(custMap,(customerPhone(j.CustomerID)||"-")+" | "+(customerName(j.CustomerID)||"Walk-in"),total,jp,jc,jb);
+ }
+ var monthRows=bucketRows(months), dayRows=bucketRows(days), statusRows=countBucketRows(statusMap), itemRows=countBucketRows(itemMap), custRows=countBucketRows(custMap), jobRows=[];
+ for(i=jobs.length-1;i>=0;i--){j=jobs[i]; jobRows.push("<td>"+esc(j.JobID)+"</td><td>"+esc(j.DateIn)+"</td><td>"+esc(customerPhone(j.CustomerID))+"<br/><span class='softText'>"+esc(customerName(j.CustomerID))+"</span></td><td>"+esc(jobItem(j))+"</td><td>"+statusBadge(j.Status)+"</td><td>"+statusBadge(paymentStatus(j))+"</td><td>"+money(jobTotal(j))+"</td><td>"+money(jobPaid(j.JobID))+"</td><td>"+money(num(j.Cost))+"</td><td>"+money(jobBalance(j))+"</td>");}
+ var erows=[]; for(i=DB.EXPENSES.length-1;i>=0;i--){e=DB.EXPENSES[i]; if(!dateInRange(e.Date,RPT_FROM,RPT_TO) || !matchObj(e,q)){continue;} erows.push("<td>"+esc(e.ExpenseID)+"</td><td>"+esc(e.Date)+"</td><td>"+esc(e.Category)+"</td><td>"+esc(e.Description)+"</td><td>"+money(e.Amount)+"</td><td>"+actionBtn("View","btnBlue","viewExpense",e.ExpenseID)+"</td>");}
+ return reportFilterForm()+"<div class='grid'><div class='col'><div class='kpi gradBlue'><div class='label'>Filtered Jobs</div><div class='value'>"+jobs.length+"</div><div class='small'>Completed "+completed+"</div></div></div><div class='col'><div class='kpi gradGreen'><div class='label'>Collected</div><div class='value'>"+money(paid)+"</div><div class='small'>Payment diterima</div></div></div><div class='col'><div class='kpi gradOrange'><div class='label'>Balance</div><div class='value'>"+money(balance)+"</div><div class='small'>Belum bayar</div></div></div><div class='col'><div class='kpi gradPurple'><div class='label'>Net</div><div class='value'>"+money(paid-cost-exp)+"</div><div class='small'>Collected - cost - expenses</div></div></div></div><div class='grid' style='margin-top:16px;'><div class='col'><div class='card'><h2>Monthly Summary</h2>"+table(["Month","Jobs","Sales","Collected","Cost","Balance","Profit"],monthRows)+"</div></div><div class='col'><div class='card'><h2>Daily Summary</h2>"+table(["Date","Jobs","Sales","Collected","Cost","Balance","Profit"],dayRows)+"</div></div></div><div class='grid' style='margin-top:16px;'><div class='col'><div class='card'><h3>Status / Payment</h3>"+table(["Type","Jobs","Sales","Collected","Cost","Balance","Profit"],statusRows)+"</div></div><div class='col'><div class='card'><h3>Top Item / Service</h3>"+table(["Item","Jobs","Sales","Collected","Cost","Balance","Profit"],itemRows)+"</div></div></div><div class='card'><h3>Customer / Phone Summary</h3>"+table(["Phone / Customer","Jobs","Sales","Collected","Cost","Balance","Profit"],custRows)+"</div><div class='card'><h3>Filtered Job Details</h3>"+pageSearchBox("Search jobs...")+table(["Job ID","Date","Phone / Customer","Item","Status","Payment","Total","Paid","Cost","Balance"],jobRows)+"</div>"+expenseForm()+"<div class='card'><h3>Expenses</h3>"+table(["ID","Date","Category","Description","Amount","Action"],erows)+"</div>";
+}
+
+function reportFilterForm(){
+ var statusOpts="<option value=''>All Status</option>"+opt("JobStatus",RPT_STATUS);
+ var payOpts="<option value=''>All Payment</option><option "+(RPT_PAYMENT=="Paid"?"selected":"")+">Paid</option><option "+(RPT_PAYMENT=="Partial"?"selected":"")+">Partial</option><option "+(RPT_PAYMENT=="Unpaid"?"selected":"")+">Unpaid</option>";
+ return "<div class='card noPrint'><h2>Reports Filter</h2><div class='formGrid'>"+row3("From Date","<input id='rptFrom' class='input' value='"+esc(RPT_FROM)+"'/>","To Date","<input id='rptTo' class='input' value='"+esc(RPT_TO)+"'/>","Status","<select id='rptStatus' class='select'>"+statusOpts+"</select>")+row3("Payment","<select id='rptPayment' class='select'>"+payOpts+"</select>","Technician","<input id='rptTech' class='input' value='"+esc(RPT_TECH)+"'/>","Phone","<input id='rptPhone' class='input' value='"+esc(RPT_PHONE)+"'/>")+"</div><button class='btn btnBlue' onclick='applyReportFilter()'>Apply Filter</button><button class='btn btnGhost' onclick='clearReportFilter()'>Clear Filter</button><button class='btn btnGreen' onclick='downloadMonthlyReportExcel()'>Download Monthly Report Excel</button></div>";
+}
+
+function dateInRange(d,from,to){d=String(d||""); if(from && d<from){return false;} if(to && d>to){return false;} return true;}
+function reportJobMatch(j){if(!dateInRange(j.DateIn,RPT_FROM,RPT_TO)){return false;} if(RPT_STATUS && j.Status!=RPT_STATUS){return false;} if(RPT_PAYMENT && paymentStatus(j)!=RPT_PAYMENT){return false;} if(RPT_TECH && String(j.Technician||"").toLowerCase().indexOf(RPT_TECH.toLowerCase())<0){return false;} if(RPT_PHONE && phoneKey(customerPhone(j.CustomerID)).indexOf(phoneKey(RPT_PHONE))<0){return false;} return true;}
+function addReportBucket(map,key,j,total,paid,cost,balance){if(!map[key]){map[key]={jobs:0,sales:0,paid:0,cost:0,balance:0};} map[key].jobs++; map[key].sales+=total; map[key].paid+=paid; map[key].cost+=cost; map[key].balance+=balance;}
+function addCountBucket(map,key,total,paid,cost,balance){if(!map[key]){map[key]={jobs:0,sales:0,paid:0,cost:0,balance:0};} map[key].jobs++; map[key].sales+=total; map[key].paid+=paid; map[key].cost+=cost; map[key].balance+=balance;}
+function bucketRows(map){var keys=[], rows=[]; for(var k in map){keys.push(k);} keys.sort(); for(var i=keys.length-1;i>=0;i--){var r=map[keys[i]]; rows.push("<td>"+esc(keys[i])+"</td><td>"+r.jobs+"</td><td>"+money(r.sales)+"</td><td>"+money(r.paid)+"</td><td>"+money(r.cost)+"</td><td>"+money(r.balance)+"</td><td>"+money(r.paid-r.cost)+"</td>");} return rows;}
+function countBucketRows(map){var keys=[], rows=[]; for(var k in map){keys.push(k);} keys.sort(function(a,b){return map[b].paid-map[a].paid;}); for(var i=0;i<keys.length;i++){var r=map[keys[i]]; rows.push("<td>"+esc(keys[i])+"</td><td>"+r.jobs+"</td><td>"+money(r.sales)+"</td><td>"+money(r.paid)+"</td><td>"+money(r.cost)+"</td><td>"+money(r.balance)+"</td><td>"+money(r.paid-r.cost)+"</td>");} return rows;}
+function exportReportHTML(){var html="<html><head><meta charset='utf-8'><title>AEPro Report</title></head><body>"+document.getElementById("content").innerHTML+"</body></html>"; if(fso){var p=pathJoin(CSV_FOLDER,"AEPro_Report_"+stamp()+".html"); writeText(p,html); toast("Report exported."); openFolder(CSV_FOLDER);}else{downloadTextFile("AEPro_Report_"+stamp()+".html",html);}}
+function totalPaid(){var s=0; for(var i=0;i<DB.PAYMENTS.length;i++){s+=num(DB.PAYMENTS[i].Amount);} return s;}
+function totalCost(){var s=0; for(var i=0;i<DB.JOBS.length;i++){s+=num(DB.JOBS[i].Cost);} return s;}
+function expenseForm(){return "<div class='card'><h3>Add Expense</h3><div class='formGrid'>"+row3("Category","<input id='exCat' class='input'/>","Description","<input id='exDesc' class='input'/>","Amount","<input id='exAmt' class='input'/>")+row3("Date","<input id='exDate' class='input' value='"+todayISO()+"'/>","Action","<button class='btn btnBlue' onclick='addExpense()'>Add Expense</button>","","")+"</div></div>";}
+function addExpense(){if(num(val("exAmt"))<=0){toast("Invalid expense amount."); return;} DB.EXPENSES.push({"ExpenseID":"EXP-"+("0000"+(DB.EXPENSES.length+1)).slice(-4),"Date":val("exDate")||todayISO(),"Category":val("exCat"),"Description":val("exDesc"),"Amount":val("exAmt")}); saveDB(); renderPage("reports");}
+function deleteExpense(id){if(!confirm("Delete expense "+id+"?")){return;} var idx=findIndexBy("EXPENSES","ExpenseID",id); if(idx>=0){DB.EXPENSES.splice(idx,1);} saveDB(); renderPage("reports");}
+
+function page_searchall(){
+ var q=GLOBAL_Q, rows=[]; var packs=[["JOBS","JobID"],["CUSTOMERS","CustomerID"],["INVENTORY","PartID"],["PAYMENTS","PaymentID"],["WARRANTY","WarrantyID"],["PRICEBOOK","ServiceID"]];
+ for(var p=0;p<packs.length;p++){var arr=DB[packs[p][0]]||[]; for(var i=0;i<arr.length;i++){if(matchObj(arr[i],q)){rows.push("<td>"+packs[p][0]+"</td><td>"+esc(arr[i][packs[p][1]])+"</td><td>"+esc(JSON.stringify(arr[i]).substr(0,150))+"</td>");}}}
+ return "<div class='card'><h2>Global Search Results</h2><div class='softText'>Search: "+esc(q)+"</div>"+table(["Module","ID","Matched Data"],rows)+"</div>";
+}
+
+function page_settings(){
+ var h="<div class='card'><h2>Settings</h2><div class='formGrid'>";
+ h+=row3("Business Name","<input id='sBusiness' class='input' value='"+esc(SETTINGS.BusinessName||"KEDAI REPAIR PHONE")+"'/>","Phone","<input id='sPhone' class='input' value='"+esc(SETTINGS.Phone||"")+"'/>","WhatsApp","<input id='sWA' class='input' value='"+esc(SETTINGS.WhatsApp||"")+"'/>");
+ h+=row3("Location","<input id='sLoc' class='input' value='"+esc(SETTINGS.Location||"")+"'/>","SSM / Registration No","<input id='sSSM' class='input' value='"+esc(SETTINGS.SSMNo||"")+"'/>","Logo Path","<input id='sLogo' class='input' value='"+esc(SETTINGS.LogoPath||"assets/ae_pro_fix_logo.png")+"'/>");
+ h+=row3("QR Path","<input id='sQR' class='input' value='"+esc(SETTINGS.QRPath||"assets/payment_qr.png")+"'/>","Bank Name","<input id='sBank' class='input' value='"+esc(SETTINGS.BankName||"")+"'/>","Bank Account","<input id='sAcc' class='input' value='"+esc(SETTINGS.BankAccount||"")+"'/>");
+ h+=row3("Account Name","<input id='sAccName' class='input' value='"+esc(SETTINGS.AccountName||"")+"'/>","Invoice Prefix","<input id='sInvPrefix' class='input' value='"+esc(SETTINGS.InvoicePrefix||"AEP-INV")+"'/>","Receipt Prefix","<input id='sRecPrefix' class='input' value='"+esc(SETTINGS.ReceiptPrefix||"AEP-RCP")+"'/>");
+ h+=row3("Data Mode","<input class='input' value='"+(ONLINE_ENABLED?"Firebase Online":"Local")+"' disabled/>","","","","");
+ h+="</div><label class='lbl'>Invoice Note</label><textarea id='sNote' class='textarea'>"+esc(SETTINGS.InvoiceNote||"")+"</textarea><label class='lbl'>Warranty / Terms</label><textarea id='sTerms' class='textarea'>"+esc(SETTINGS.WarrantyTerms||"Warranty bermula selepas repair siap atau pickup. Warranty tidak cover crack, water damage, short, board tamper, atau kerosakan baru selepas pickup.")+"</textarea><div class='formHint'>ID baru ikut format PREFIX-YYYYMMDD-00001.</div><button class='btn btnBlue' onclick='saveSettings()'>Save Settings</button><button class='btn btnPurple' onclick='toggleTheme()'>Switch Dark Mode</button><button class='btn btnGreen' onclick='downloadMonthlyReportExcel()'>Download Monthly Report Excel</button><button class='btn btnGreen' onclick='downloadDatabaseExcel()'>Download Database Excel</button><button class='btn btnOrange' onclick='backupDB()'>Backup Database</button><button class='btn btnRed' onclick='saveAndExit()'>Save & Exit</button></div>";
+ h+="<div class='card'><h3>User Login</h3><div class='formGrid'>"+row3("Username","<input id='uName' class='input' value='admin' autocomplete='off'/>","New Password","<input id='uPass' type='password' class='input' autocomplete='off'/>","Action","<button class='btn btnBlue' onclick='updateUserPass()'>Update Login</button>")+"</div><div class='formHint'>Password disimpan dalam bentuk hash dan login akan lock sementara selepas terlalu banyak percubaan gagal.</div></div>";
+ return h;
+}
+
+function saveSettings(){setSetting("BusinessName",val("sBusiness")||"KEDAI REPAIR PHONE"); setSetting("Phone",val("sPhone")); setSetting("WhatsApp",val("sWA")); setSetting("Location",val("sLoc")); setSetting("SSMNo",val("sSSM")); setSetting("LogoPath",val("sLogo")); setSetting("QRPath",val("sQR")); setSetting("BankName",val("sBank")); setSetting("BankAccount",val("sAcc")); setSetting("AccountName",val("sAccName")); setSetting("ExcelAutoSync","No"); setSetting("InvoicePrefix",val("sInvPrefix")||"AEP-INV"); setSetting("ReceiptPrefix",val("sRecPrefix")||"AEP-RCP"); setSetting("InvoiceNote",val("sNote")); setSetting("WarrantyTerms",val("sTerms")); saveDB(); refreshBrand(); toast("Settings saved.");}
+
+function updateUserPass(){var u=trim(val("uName")), p=String(document.getElementById("uPass").value||""); if(!u||!p){toast("Isi username dan password baru."); return;} if(p.length<6){toast("Password minimum 6 character."); return;} var found=false; for(var i=0;i<DB.USERS.length;i++){if(DB.USERS[i].Username==u){DB.USERS[i].PasswordHash=passwordHash(p); DB.USERS[i].Password=""; DB.USERS[i].Status=DB.USERS[i].Status||"Active"; found=true;}} if(!found){DB.USERS.push({"UserID":"USR-"+("000"+(DB.USERS.length+1)).slice(-3),"Username":u,"Password":"","PasswordHash":passwordHash(p),"Role":"Admin","Status":"Active","DisplayName":u});} saveDB(); toast("Login updated.");}
+
+function openFolder(p){try{if(shell){shell.Run('explorer "'+p+'"');}else{toast("Folder open is for Windows HTA only.");}}catch(e){toast("Cannot open folder.");}}
+function openLiveExcel(){downloadDatabaseExcel();}
+
+function filteredMonthlyWorkbookXML(){var saveFrom=RPT_FROM, saveTo=RPT_TO; if(!RPT_FROM && !RPT_TO){RPT_FROM=todayISO().substr(0,7)+"-01"; RPT_TO=todayISO();} var rows=[], q=combinedQ(); for(var i=0;i<DB.JOBS.length;i++){var j=DB.JOBS[i]; if(reportJobMatch(j) && (matchObj(j,q)||matchObj({Customer:customerName(j.CustomerID),Phone:customerPhone(j.CustomerID),Payment:paymentStatus(j)},q))){rows.push({"JobID":j.JobID,"Date":j.DateIn,"Customer":customerName(j.CustomerID),"Phone":customerPhone(j.CustomerID),"Item":jobItem(j),"Description":jobDesc(j),"Status":j.Status,"Payment":paymentStatus(j),"Total":jobTotal(j),"Paid":jobPaid(j.JobID),"Cost":num(j.Cost),"Balance":jobBalance(j)});}} RPT_FROM=saveFrom; RPT_TO=saveTo; var xml='<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles><Style ss:ID="hdr"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#0F172A" ss:Pattern="Solid"/></Style></Styles>'; xml+=sheetXML("MONTHLY_REPORT",rows); xml+='</Workbook>'; return xml;}
+function downloadMonthlyReportExcel(){loadDB(); downloadTextFile("AEPro_Monthly_Report_"+stamp()+".xls",filteredMonthlyWorkbookXML()); toast("Monthly report excel downloaded.");}
+function downloadDatabaseExcel(){loadDB(); downloadTextFile("AEPro_Database_"+stamp()+".xls",buildMasterWorkbookXML()); toast("Database excel downloaded.");}
+
+function exportCSVSilent(){try{exportCSV(true);}catch(e){}}
+function exportCSV(silent){downloadDatabaseExcel();}
+
+function sheetXML(name,arr){var headers=headersForSheet(name), i,k; arr=arr||[]; for(i=0;i<arr.length;i++){for(k in arr[i]){if(indexOf(headers,k)<0){headers.push(k);}}} if(headers.length==0){headers=["NoData"];} var x='<Worksheet ss:Name="'+xmlSafeName(name)+'"><Table>'; for(i=0;i<headers.length;i++){x+='<Column ss:Width="110"/>';} x+='<Row>'; for(i=0;i<headers.length;i++){x+='<Cell ss:StyleID="hdr"><Data ss:Type="String">'+xmlEsc(headers[i])+'</Data></Cell>';} x+='</Row>'; for(i=0;i<arr.length;i++){x+='<Row>'; for(var c=0;c<headers.length;c++){x+=xmlCell(arr[i][headers[c]]);} x+='</Row>';} x+='</Table></Worksheet>'; return x;}
+function xmlCell(v){v=String(v==null?"":v); var n=parseFloat(v); var isN=(v!=="" && !isNaN(n) && String(n)==v); return '<Cell><Data ss:Type="'+(isN?'Number':'String')+'">'+xmlEsc(v)+'</Data></Cell>';}
+function xmlEsc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function xmlSafeName(n){return String(n).replace(/[\\/\?\*\[\]:]/g,"_").substr(0,31);}
+function writeCSV(name,arr){}
+function csvCell(v){v=String(v==null?"":v); v=v.replace(/"/g,'""'); return '"'+v+'"';}
+function indexOf(a,x){for(var i=0;i<a.length;i++){if(a[i]==x){return i;}} return -1;}
+function backupDB(){loadDB(); var s=stamp(); if(!fso){downloadTextFile("database_backup_"+s+".json",JSON.stringify(DB,null,2)); toast("Backup downloaded."); return;} var p=pathJoin(BACKUP_FOLDER,"database_backup_"+s+".json"); writeText(p,JSON.stringify(DB,null,2)); toast("Backup saved.");}
+
+function saveAndExit(){saveDB(); try{if(fso){window.close();}else{toast("Data saved.");}}catch(e){}}
+window.onbeforeunload=function(){try{saveDB();}catch(e){}};
+
+window.onload=init;
+</script>
+</body>
+</html>
